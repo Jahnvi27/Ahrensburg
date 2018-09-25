@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
+
 def fetchui():
     return render_template('chat.html');
 

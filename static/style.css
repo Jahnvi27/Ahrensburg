@@ -1,0 +1,51 @@
+.body {
+  overflow: hidden;
+}
+
+.landingPage {
+  height: 100vh;
+}
+
+.welcome {
+  text-align: center;
+}
+
+.text {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.frame {
+  background-image: url("/static/img/msg_bg.jpg");
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+}
+
+.frame>div:last-of-type {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #d4d4d4;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #d4d4d4;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #d4d4d4;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: #d4d4d4;
+}
