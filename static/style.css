@@ -164,3 +164,24 @@ ul {
     top:0;
     overflow-y:scroll;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+    border: 0px;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2196F3;
+    color: white;
+}
+
