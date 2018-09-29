@@ -152,3 +152,15 @@ input:focus {
   /* Firefox 18- */
   color: #d4d4d4;
 }
+
+lst {
+    width:100%;
+    list-style-type: none;
+    padding:18px;
+    position:absolute;
+    bottom:47px;
+    display:flex;
+    flex-direction: column;
+    top:0;
+    overflow-y:scroll;
+}
