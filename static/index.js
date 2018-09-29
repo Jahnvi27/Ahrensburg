@@ -83,7 +83,7 @@ function inputConversation(userbot, message, time){
     }
     setTimeout(
         function(){
-            $("lst").append(introField).scrollTop($("lst").prop('scrollHeight'));
+            $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
         }, time);
 
 }
