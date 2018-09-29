@@ -17,6 +17,7 @@ function typeQuery() {
     //Remove--
     console.log("User types query!!");
     //--
+      inputConversation("user",text);
     $('#usrtext').val('');
   }
 };
@@ -51,4 +52,47 @@ function formatTime(min) {
         min = "0" + min;
     }
     return min;
+}
+
+//-- Method to add introductory conversation.
+function inputConversation(userbot, message, time){
+    if (time === undefined){
+        time = 0;
+    }
+    var introField = "";
+    var date = showTimeStamp(new Date());
+
+    if (userbot == "bot"){
+        introField = '<li style="width:100%">' +
+                        '<div class="box macro">' +
+                            '<div class="text text-l">' +
+                                '<p>'+ message +'</p>' +
+                                '<p><small>'+date+'</small></p>' +
+                            '</div>' +
+                        '</div>' +
+                    '</li>';
+    }else{
+        introField = '<li style="width:100%;">' +
+                        '<div class="box-right macro">' +
+                            '<div class="text text-r">' +
+                                '<p>'+ message +'</p>' +
+                                '<p><small>'+date+'</small></p>' +
+                            '</div>' +
+
+                  '</li>';
+    }
+    setTimeout(
+        function(){
+            $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
+        }, time);
+
+}
+
+//-- Method to print introductory conversation
+function startConversation() {
+    inputConversation("bot", "Hello, how are you today?", 0);
+    inputConversation("user", "Hi, I am good.", 1500);
+    inputConversation("bot", "What would you like to talk about today?", 3500);
+    inputConversation("user", "Tell me some good stuff to watch.", 7000);
+    inputConversation("bot", "What would you like to watch?", 9500);
 }
