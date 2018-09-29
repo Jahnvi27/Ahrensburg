@@ -54,6 +54,14 @@ function formatTime(min) {
     return min;
 }
 
+var bot = {};
+  bot.displayIcon = "/static/image/bot.png";
+
+
+var user = {};
+  user.displayIcon = "/static/image/user.jpg";
+
+
 //-- Method to add introductory conversation.
 function inputConversation(userbot, message, time){
     if (time === undefined){
@@ -64,6 +72,7 @@ function inputConversation(userbot, message, time){
 
     if (userbot == "bot"){
         introField = '<li style="width:100%">' +
+                       '<div class="displayIcon"><img class="img-circle" style="width:100%;" src="'+ bot.displayIcon +'" /></div>'+
                         '<div class="box macro">' +
                             '<div class="text text-l">' +
                                 '<p>'+ message +'</p>' +
@@ -78,7 +87,7 @@ function inputConversation(userbot, message, time){
                                 '<p>'+ message +'</p>' +
                                 '<p><small>'+date+'</small></p>' +
                             '</div>' +
-
+                    '<div class="displayIcon" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:100%;" src="'+user.displayIcon+'" /></div>'+
                   '</li>';
     }
     setTimeout(
