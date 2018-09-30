@@ -98,11 +98,32 @@ function inputConversation(userbot, message, time){
 
 }
 
+  function suggestion(message,time) {
+    if (time === undefined) {
+        time = 0;
+    }
+    var introField = "";
+
+        introField = '<li style="width:100%">' +
+            '<div class="center">' +
+            '<p>' + message + '</p>' +
+            '</div>' +
+            '</div>' +
+            '</li>';
+
+         setTimeout(
+        function () {
+            $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
+        }, time);
+}
+
 //-- Method to print introductory conversation
 function startConversation() {
     inputConversation("bot", "Hello, how are you today?", 0);
-    inputConversation("user", "Hi, I am good.", 1500);
-    inputConversation("bot", "What would you like to talk about today?", 3500);
-    inputConversation("user", "Tell me some good stuff to watch.", 7000);
-    inputConversation("bot", "What would you like to watch?", 9500);
+    inputConversation("user", "Hi, I am good.", 1000);
+    inputConversation("bot", "What would you like to talk about today?", 2500);
+    inputConversation("user", "Tell me some good stuff to watch.", 4000);
+    inputConversation("bot", "What would you like to watch?", 5500);
+    suggestion('<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px;margin: 10px">Movie</button>' +
+            '<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px; margin: 10px">TV Show</button>',7000);
 }
