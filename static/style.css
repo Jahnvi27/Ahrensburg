@@ -80,7 +80,7 @@
 }
 
 .frame {
-  background-image: url("/static/img/msg_bg.jpg");
+  background-image: url("/static/image/msg_bg.jpg");
   height: 100vh;
   overflow: hidden;
   padding: 0;
@@ -164,3 +164,24 @@ ul {
     top:0;
     overflow-y:scroll;
 }
+
+.displayIconBot{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 50px;
+    height: 50px;
+    float:left;
+    padding-right:10px;
+}
+
+.displayIconUser{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 50px;
+    height: 50px;
+    float:right;
+    padding:0px 0px 0px 10px;
+}
+
