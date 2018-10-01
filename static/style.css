@@ -1,12 +1,16 @@
-.body {
-  overflow: hidden;
+body {
+  background-image: url("/static/image/page_bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .landingPage {
   height: 100vh;
 }
 
-.glyphicon-hand-down {
+.glyphicon-circle-arrow-down {
+  padding-top: 100px;
   display: block;
   text-align: center;
   margin-left: auto;
@@ -16,12 +20,30 @@
 
 .welcome {
   text-align: center;
+  padding-top: 75px;
+  font-family: 'Alegreya', serif;
+}
+
+.display-1 {
+  font-size: 90px;
+  color: #ffffff;
+  text-shadow: 4px 4px 8px #000000;
+}
+
+.display-2 {
+  font-size: 45px;
+  color: white;
+  text-shadow: 4px 4px 8px #000000;
+}
+
+.white, .white a {
+  color: #ffffff;
 }
 
 .usrtext {
   border: 0;
   padding: 10px;
-  width: 90%;
+  width: 115%;
   background: #ffffff;
 }
 
@@ -42,9 +64,18 @@
 .text>p:last-of-type {
   width: 100%;
   text-align: right;
-  color: #c0c0c0;
+  color: silver;
   margin-bottom: -7px;
   margin-top: auto;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  float: left;
+  padding-right: 10px;
 }
 
 .text-l {
@@ -73,7 +104,7 @@
 
 .box-right {
   float: right;
-  background: #ffffff;
+  background: white;
 }
 
 .box {
@@ -83,7 +114,7 @@
 }
 
 .frame {
-  background-image: url("/static/image/chat_bg.png");
+  background-image: url("/static/image/chat_bg_test.png");
   height: 100vh;
   overflow: hidden;
   padding: 0;
@@ -97,7 +128,7 @@
 }
 
 body>div>div>div:nth-child(2)>span {
-  background: #ffffff;
+  background: white;
   padding: 10px;
   font-size: 21px;
   border-radius: 50%;
@@ -117,7 +148,59 @@ body>div>div>div.box-right.macro {
   position: relative;
   border-style: solid;
   border-width: 0 13px 13px 0;
-  border-color: transparent #ffffff transparent transparent;
+  border-color: transparent whitesmoke transparent transparent;
+}
+
+ul {
+  width: 100%;
+  list-style-type: none;
+  padding: 18px;
+  position: absolute;
+  bottom: 47px;
+  display: flex;
+  flex-direction: column;
+  top: 0;
+  overflow-y: scroll;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  border: 0px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #2196F3;
+  color: #ffffff;
+}
+
+.displayIconBot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  float: left;
+  padding-right: 10px;
+}
+
+.displayIconUser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  float: right;
+  padding: 0px 0px 0px 10px;
 }
 
 .box-right:after {
@@ -125,11 +208,11 @@ body>div>div>div.box-right.macro {
   height: 0;
   content: "";
   top: -5px;
-  left: 15.5px;
+  left: 15.5%;
   position: relative;
   border-style: solid;
   border-width: 13px 13px 0 0;
-  border-color: white transparent transparent transparent;
+  border-color: #ffffff transparent transparent transparent;
 }
 
 input:focus {
@@ -155,55 +238,3 @@ input:focus {
   /* Firefox 18- */
   color: #d4d4d4;
 }
-
-ul {
-    width:100%;
-    list-style-type: none;
-    padding:18px;
-    position:absolute;
-    bottom:47px;
-    display:flex;
-    flex-direction: column;
-    top:0;
-    overflow-y:scroll;
-}
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn {
-    border: 0px;
-    background-color: white;
-    color: black;
-    padding: 10px 20px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #2196F3;
-    color: #ffffff;
-}
-
-.displayIconBot{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width: 50px;
-    height: 50px;
-    float:left;
-    padding-right:10px;
-}
-
-.displayIconUser{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width: 50px;
-    height: 50px;
-    float:right;
-    padding:0px 0px 0px 10px;
-}
-
