@@ -22,7 +22,7 @@
   border: 0;
   padding: 10px;
   width: 90%;
-  background: white;
+  background: #ffffff;
 }
 
 .text {
@@ -36,13 +36,13 @@
   margin-top: 0;
   margin-bottom: auto;
   line-height: 13px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .text>p:last-of-type {
   width: 100%;
   text-align: right;
-  color: silver;
+  color: #c0c0c0;
   margin-bottom: -7px;
   margin-top: auto;
 }
@@ -50,6 +50,7 @@
 .text-l {
   float: left;
   padding-right: 10px;
+  word-wrap: break-word;
 }
 
 .pushIcon {
@@ -60,27 +61,29 @@
 .text-r {
   float: right;
   padding-left: 10px;
+  word-wrap: break-word;
 }
 
 .macro {
   margin-top: 10px;
-  border-radius: 9px;
+  border-radius: 5px;
   padding: 5px;
   display: flex;
 }
 
 .box-right {
   float: right;
-  background: white;
+  background: #ffffff;
 }
 
 .box {
+  width: auto;
   float: left;
-  background: whitesmoke;
+  background: #ffffff;
 }
 
 .frame {
-  background-image: url("/static/img/msg_bg.jpg");
+  background-image: url("/static/image/chat_bg.png");
   height: 100vh;
   overflow: hidden;
   padding: 0;
@@ -94,7 +97,7 @@
 }
 
 body>div>div>div:nth-child(2)>span {
-  background: white;
+  background: #ffffff;
   padding: 10px;
   font-size: 21px;
   border-radius: 50%;
@@ -122,7 +125,7 @@ body>div>div>div.box-right.macro {
   height: 0;
   content: "";
   top: -5px;
-  left: 14px;
+  left: 15.5px;
   position: relative;
   border-style: solid;
   border-width: 13px 13px 0 0;
@@ -164,3 +167,43 @@ ul {
     top:0;
     overflow-y:scroll;
 }
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+    border: 0px;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #2196F3;
+    color: #ffffff;
+}
+
+.displayIconBot{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 50px;
+    height: 50px;
+    float:left;
+    padding-right:10px;
+}
+
+.displayIconUser{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 50px;
+    height: 50px;
+    float:right;
+    padding:0px 0px 0px 10px;
+}
+
