@@ -1,5 +1,5 @@
 body {
-  background-image: url("/static/image/page_bg.png");
+  background-image: url("/static/image/page_bg.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -51,6 +51,7 @@ body {
   width: 85%;
   display: flex;
   flex-direction: column;
+  word-wrap: break-word;
 }
 
 .text>p:first-of-type {
@@ -114,7 +115,7 @@ body {
 }
 
 .frame {
-  background-image: url("/static/image/chat_bg_test.png");
+  background-image: url("/static/image/chat_bg.png");
   height: 100vh;
   overflow: hidden;
   padding: 0;
