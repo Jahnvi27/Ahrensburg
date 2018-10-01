@@ -117,4 +117,4 @@ function startConversation() {
   inputConversation("bot", "What would you like to watch?", 5500);
   suggestion('<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px;margin: 10px">Movie</button>' +
     '<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px; margin: 10px">TV Show</button>', 7000);
-}
+  }
