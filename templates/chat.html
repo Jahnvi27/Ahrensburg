@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <link href="/static/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-      <link href="/static/style.css" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Alegreya:400,500|Nunito|Quattrocento:400,700" rel="stylesheet"><script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-      <script src="/static/bootstrap.js"></script>
-      <script src="/static/index.js"></script>
-    </head>
-    <body>
-      <div class="landingPage">
-        <h1 class="welcome display-1">Hey, I'm MovieBuddy</h1>
-        <h1 class="welcome display-2">I'm your personal movie assistant.
-<br>Click the arrow to know more about movies and tv-shows.</h1>
-        <br>
-        <div class="glyphicon glyphicon-circle-arrow-down white" id="clickScroll"></div>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya:400,500%7CNunito%7CQuattrocento:400,700" rel="stylesheet">
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/static/index.js"></script>
+</head>
+
+<body>
+  <div class="landingPage">
+    <h1 class="welcome display-1">Hey, I'm MovieBuddy</h1>
+    <h1 class="welcome display-2">I'm your personal movie assistant.
+      <br>Click the arrow to know more.</h1>
+    <div class="glyphicon glyphicon-circle-arrow-down white" id="clickScroll"></div>
+  </div>
+  <div class="col-sm-4 col-sm-offset-4 frame">
+    <ul></ul>
+    <div>
+      <div class="box-right macro usrtext">
+        <div class="text text-r" style="background:white !important">
+          <input class="usrtext" id="usrtext" placeholder="Type a message" />
+        </div>
       </div>
-      <div class="col-sm-4 col-sm-offset-4 frame">
-          <ul></ul>
-          <div>
-              <div class="box-right macro usrtext">
-                  <div class="text text-r" style="background:white !important">
-                      <input class="usrtext" id="usrtext" placeholder="Type a message"/>
-                  </div>
-              </div>
-              <div style="float:right; padding:10px;">
-                  <span class="pushIcon btn-primary glyphicon glyphicon-share-alt" onclick="typeQuery()"></span>
-              </div>
-          </div>
+      <div style="float:right; padding:10px;">
+        <span class="pushIcon btn-primary glyphicon glyphicon-share-alt" onclick="typeQuery()"></span>
       </div>
-    </body>
+    </div>
+  </div>
+</body>
+
 </html>
