@@ -48,12 +48,6 @@ function submit_message(text) {
 //-- Method to print introductory conversation
 function startConversation() {
   inputConversation("bot", "Hello, how are you today?");
-  inputConversation("user", "Hi, I am good.", 1000);
-  inputConversation("bot", "What would you like to talk about today?", 2500);
-  inputConversation("user", "Tell me some good stuff to watch.", 4000);
-  inputConversation("bot", "What would you like to watch?", 5500);
-  suggestion('<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px;margin: 10px">Movie</button>' +
-    '<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px; margin: 10px">TV Show</button>', 7000);
 }
 
 //-- Remove landing page
