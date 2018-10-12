@@ -1,10 +1,21 @@
 $(document).ready(function() {
-  $('#usrtext').bind("keypress",
-    function(e) {
-      if (e != null && e.which == 13) {
-        typeQuery();
-      }
-    });
+
+  // Method to capture user query as form data
+  // and called when user queries through UI
+  $('#queryForm').on('submit', function(e) {
+    const inputText = $('#usrtext').val();
+    if (inputText !== "") {
+      inputConversation("user", inputText);
+      $('#usrtext').val('');
+    }
+    e.preventDefault();
+    if (!inputText) {
+      return
+    }
+    inputConversation("bot", "<div id=\"loading\"></div>");
+    submit_message(inputText);
+  });
+
   //Scroll landing-page on click
   $('#clickScroll').click(function() {
     var landingPage = document.getElementsByClassName('landingPage').item(0);
@@ -18,14 +29,33 @@ $(document).ready(function() {
     startConversation();
   });
 });
-//-- Type and ask a Query
-function typeQuery() {
-  var text = $('#usrtext').val();
-  if (text !== "") {
-    inputConversation("user", text);
-    $('#usrtext').val('');
+
+// Method to send user query in a form based object to server
+// and receive bot's response and insert in the UI
+function submit_message(text) {
+  console.log(text)
+  $.post("/send_message", {
+    message: text
+  }, handle_response);
+
+  //Handles bot response
+  function handle_response(data) {
+    document.getElementById("loading").innerHTML = data.message;
+    document.getElementById("loading").id = "";
   }
-};
+}
+
+//-- Method to print introductory conversation
+function startConversation() {
+  inputConversation("bot", "Hello, how are you today?");
+  inputConversation("user", "Hi, I am good.", 1000);
+  inputConversation("bot", "What would you like to talk about today?", 2500);
+  inputConversation("user", "Tell me some good stuff to watch.", 4000);
+  inputConversation("bot", "What would you like to watch?", 5500);
+  suggestion('<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px;margin: 10px">Movie</button>' +
+    '<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px; margin: 10px">TV Show</button>', 7000);
+}
+
 //-- Remove landing page
 window.onscroll = function() {
   var botFrame = document.getElementsByClassName('frame').item(0);
@@ -36,8 +66,8 @@ window.onscroll = function() {
     startConversation();
   }
 }
+
 // function to show the time in conversation
-// this function should be called while creating the conversation
 function showTimeStamp(date) {
   var hours = date.getHours();
   var minutes = date.getMinutes();
@@ -47,6 +77,7 @@ function showTimeStamp(date) {
   var startTime = hours + ':' + minutes + ' ' + period;
   return startTime;
 }
+
 //function to format the minutes
 function formatTime(min) {
   if (min < 10) {
@@ -58,11 +89,9 @@ var bot = {};
 bot.displayIcon = "/static/image/bot.png";
 var user = {};
 user.displayIcon = "/static/image/user.jpg";
-//-- Method to add introductory conversation.
-function inputConversation(userbot, message, time) {
-  if (time === undefined) {
-    time = 0;
-  }
+
+//-- Method to insert conversation into html
+function inputConversation(userbot, message) {
   var introField = "";
   var date = showTimeStamp(new Date());
   if (userbot == "bot") {
@@ -86,35 +115,15 @@ function inputConversation(userbot, message, time) {
       '</div>' +
       '</li>';
   }
-  setTimeout(
-    function() {
-      $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
-    }, time);
+  $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
 }
 
-function suggestion(message, time) {
-  if (time === undefined) {
-    time = 0;
-  }
+function suggestion(message) {
   var introField = "";
   introField = '<li style="width:100%">' +
     '<div class="center">' +
     '<p>' + message + '</p>' +
     '</div>' +
-    '</div>' +
     '</li>';
-  setTimeout(
-    function() {
-      $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
-    }, time);
+  $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
 }
-//-- Method to print introductory conversation
-function startConversation() {
-  inputConversation("bot", "Hello, how are you today?", 0);
-  inputConversation("user", "Hi, I am good.", 1000);
-  inputConversation("bot", "What would you like to talk about today?", 2500);
-  inputConversation("user", "Tell me some good stuff to watch.", 4000);
-  inputConversation("bot", "What would you like to watch?", 5500);
-  suggestion('<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px;margin: 10px">Movie</button>' +
-    '<button type="button" class="btn btn-outline-primary btn-md center-block" Style="width: 100px; margin: 10px">TV Show</button>', 7000);
-  }
