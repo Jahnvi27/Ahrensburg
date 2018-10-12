@@ -120,14 +120,14 @@ body {
  padding: 0;
 }
 
-.frame>div:last-of-type {
+#queryForm {
  position: absolute;
  bottom: 0;
  width: 100%;
  display: flex;
 }
 
-body>div>div>div:nth-child(2)>span {
+body>div>form>div:nth-child(2)>span {
  background: white;
  padding: 10px;
  font-size: 21px;
@@ -218,6 +218,10 @@ ul {
 input:focus {
  outline: none;
 }
+
+#loading:before {
+   content:url("/static/image/loading.gif");
+}​
 
 ::-webkit-input-placeholder {
  /* Chrome/Opera/Safari */
