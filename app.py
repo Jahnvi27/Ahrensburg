@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template
 import dialogflow
 import os
 
+import requests
+import json
+
 app = Flask(__name__)
 
 
@@ -36,3 +39,24 @@ def send_message():
     fulfillment_text = detect_intent(project_id, "unique", message, 'en')
     response_text = {"message":  fulfillment_text}
     return jsonify(response_text)
+
+@app.route('/get_detail', methods=['POST'])
+def get_detail():
+    data = request.get_json(silent=True)
+    movie = data['queryResult']['parameters']['movie']
+    api_key = os.getenv('TMDB_API_KEY')
+
+    detail = requests.get('https://api.themoviedb.org/3/movie/{0}?api_key={1}'.format(movie, api_key)).content
+    detail = json.loads(detail)
+    response = """
+        original_title : {0}
+        release_date: {1}
+        runtime: {2}
+        overview: {3}
+    """.format(detail['Title'], detail['Release Date'], detail['Runtime'], detail['Plot'])
+
+    reply = {
+        "fulfillment_text": response,
+    }
+
+    return jsonify(reply)
