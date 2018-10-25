@@ -48,7 +48,7 @@ def get_detail():
     results = data['result']
     scenario = results['action']
     if 'TV-Shows' in scenario:
-       names = []
+       names = ''
        parameters = results['parameters']
        genre = results['parameters']['Genre']
        language = results['parameters']['language']
@@ -59,12 +59,13 @@ def get_detail():
        show_list = details['results']
        for show in show_list:
            name = show['name']
-           names.append(name)
+           names = name + names
            reply = {
 
              "fulfillment_text": names,
            }
-           return jsonify(reply)
+
+       return jsonify(reply)
 
     else:
       movie = data['queryResult']['parameters']['movie']
