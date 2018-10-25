@@ -40,23 +40,46 @@ def send_message():
     response_text = {"message":  fulfillment_text}
     return jsonify(response_text)
 
+
 @app.route('/get_detail', methods=['POST'])
 def get_detail():
-    data = request.get_json(silent=True)
-    movie = data['queryResult']['parameters']['movie']
     api_key = os.getenv('TMDB_API_KEY')
+    data = request.get_json(silent=True)
+    results = data['result']
+    scenario = results['action']
+    if 'TV-Shows' in scenario:
+       names = []
+       parameters = results['parameters']
+       genre = results['parameters']['Genre']
+       language = results['parameters']['language']
+       data = {'language': 'en-US',
+               'with_genres': 28}
+       response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+       details = response.json()
+       show_list = details['results']
+       for show in show_list:
+           name = show['name']
+           names.append(name)
+           reply = {
 
-    detail = requests.get('https://api.themoviedb.org/3/movie/{0}?api_key={1}'.format(movie, api_key)).content
-    detail = json.loads(detail)
-    response = """
+             "fulfillment_text": names,
+           }
+           return jsonify(reply)
+
+    else:
+      movie = data['queryResult']['parameters']['movie']
+      detail = requests.get('https://api.themoviedb.org/3/movie/{0}?api_key={1}'.format(movie, api_key)).content
+      detail = json.loads(detail)
+      response = """
         original_title : {0}
         release_date: {1}
         runtime: {2}
         overview: {3}
-    """.format(detail['Title'], detail['Release Date'], detail['Runtime'], detail['Plot'])
+       """.format(detail['Title'], detail['Release Date'], detail['Runtime'], detail['Plot'])
 
     reply = {
+
         "fulfillment_text": response,
-    }
+        }
 
     return jsonify(reply)
