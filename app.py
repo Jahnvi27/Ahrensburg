@@ -77,9 +77,9 @@ def get_detail():
         overview: {3}
        """.format(detail['Title'], detail['Release Date'], detail['Runtime'], detail['Plot'])
 
-    reply = {
+      reply = {
 
         "fulfillment_text": response,
         }
 
-    return jsonify(reply)
+      return jsonify(reply)
