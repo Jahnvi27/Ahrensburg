@@ -47,11 +47,13 @@ def get_detail():
     data = request.get_json(silent=True)
     results = data['result']
     scenario = results['action']
+    # if the intent type is for TV-SHOWS then enter this condition
     if 'TV-Shows' in scenario:
        names = ''
        parameters = results['parameters']
        genre = results['parameters']['Genre']
        language = results['parameters']['language']
+       # A map is needed to store the ids of language and genre
        data = {'language': 'en-US',
                'with_genres': 28}
        response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
