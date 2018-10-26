@@ -40,6 +40,7 @@ function submit_message(text) {
 
   //Handles bot response
   function handle_response(data) {
+    console.log(data);
     document.getElementById("loading").innerHTML = data.message;
     document.getElementById("loading").id = "";
   }
