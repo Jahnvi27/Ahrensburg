@@ -26,7 +26,7 @@ def detect_intent(project_id, session_id, texts, language_code):
     query_input = dialogflow.types.QueryInput(text=text_input)
     response = session_client.detect_intent(
         session=session, query_input=query_input)
-    return response.query_result.fulfillment_text
+    return (response.query_result.fulfillment_text, response.query_result.intent.name)
 
 
 # api route to which when the user enter his comment it should be submitted.
@@ -36,8 +36,8 @@ def detect_intent(project_id, session_id, texts, language_code):
 def send_message():
     message = request.form['message']
     project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
-    fulfillment_text = detect_intent(project_id, "unique", message, 'en')
-    response_text = {"message":  fulfillment_text}
+    fulfillment_text, intent_id = detect_intent(project_id, "unique", message, 'en')
+    response_text = {"message":  fulfillment_text, "intentId": intent_id}
     return jsonify(response_text)
 
 
@@ -47,11 +47,10 @@ def get_detail():
     data = request.get_json(silent=True)
     results = data['queryResult']
     movie = data['queryResult']['parameters']
-    print(movie)
+
     scenario = results['action']
     map_genre_ids = {'Action': 28, 'adventure': 12, 'Animation': 16, 'Comedy': 35, 'Crime': 80, 'Drama': 18, 'romantic': 10749, 'thriller': 53, 'Family': 10751}
     map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
-    map_genre_ids.get('action')
     # if the intent type is for TV-SHOWS then enter this condition
     if 'TV-Shows' in scenario:
         names = ''

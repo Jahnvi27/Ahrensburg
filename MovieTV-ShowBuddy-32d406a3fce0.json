@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "movietv-showbuddy",
+  "private_key_id": "32d406a3fce09740cd1b56abe3bcbb9fae5aaf03",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJikqBDp6/wyll\ntv1vDIo1QLAO0fv4PqMRv1Qmzg51q8u/gwzynZmiMWLl4p2QGY+QGXxQVq8ROCGF\nW1+P+eeMtHooIQ81mbBfUdHTr3e7+znPQ94RnyWeimaHMUKVJo8j0QMrT2C1WPjo\n6r/UjXD0PS4qwoOxIWCO8+jM8XO4knv/qFU3wrVlswPmzMdXh9NT7UJYEXC4XzcS\nmXvbmqgSFoVzWhm36vdPLT7Wa9UY41OHLb9fqvve0+Nk4EtaEooi99p06vVLxsU+\nIDVnfrt8XPafNgXNoGA8gTNlo1T2j3HZtimRQY9SKP+BMhYMQolHZjiFAWrY01UI\n2lxfWmWlAgMBAAECggEAFcEJnbiYRhaox0PjQzNVT741wsPDsN4B+A5w5OdlBCqR\nCZD5us5sIOe3xxyY6U75AhLeKkXRC8jFRYHBZOcSqUtpzB8VZzG5qfBI99J+2Bmb\n+dVXiQtmoiBKRNl6WGMbHECZWPludOSvqWR9ZFIIGTTpYNAyKtJxe7y0Kjr9xLRJ\n/FyTidzBK0guyJUl5dttSANLRsLNsjmYCgWMUk8LRkfDs3zpaTgMoZaQvhfCOi5+\n5HiaX/mN2I2tvL07W+6Hvg0gBqiGIWTOhH9qhVij7DnNCQRBvFGfbft+JdO1W3iW\nal1KSthJ8xxT0tZQAJgDhgD4RrRre1qAR4y/LGbO2QKBgQDthoq61YAmSDmHjnoS\ntkH+iRq+u49DElvzWfrKqiazqMwg4W80cOoxgfSYpa0RBuYVPvrxIKbkeM7P9R0I\nG3BFMSqT5DRct5mhBqNwzZbdsdXZpsx+npvHt3pMp5vtdW3djNE1RTyH0654l5Ra\nTiF8LnvmP+G0AMZ0/ByhXgzk8wKBgQDZNztIExFzGofQa5P5EBuFfI+prhfpSWUc\nEnSg10sTjuOwhXJII/3iCsV7+GrL0RzVXykTkCdrEDJyPHv3kV2YOvHAT/zYotXI\n5rdbaKWYRvSArWHULDfrsihDRAFapp/0dLZ2ygIa/ELVsJPcEA9jAlDMT4Vl7xEo\npI1tqgQRBwKBgGvzHq/FAoXjg0npZe+FJ78f3qjao0SPXnzd4w4igI5cY9F5w0mp\nG7a+YkTR3zMC2KTFR9U4ysDBavS2aKhbmA3KR5iJOYb95nN5ieRle3BsN03A8eWF\n/jSpXYrjDgnAudrb+eTk/5qXiQ7DjSfxpGRE2AiP9esSAx/9yKFKFkAjAoGAfsyI\nFZXT/N5C4/64nY6ykiTZdFLFcJBArrdzT6T+FYe3EIeF4+jmvrpM+AZWyW3jqAbp\n4pqm+A+3cwotz6ITAdd+4iWPUyMTKzjLVlfrOs5I0ojj78h0SGlyqXmcVL+p5jjv\nfr6Dph8WIMn4NmFFqiVi5zGQjKWW3aPZT2gNAacCgYEA7WNs6WoRoxFCp9e6kQgJ\nh9wj/yA1+TK3z8kKLQMR/ctJ/tQGKqtis2w9s5EscRCnsP1Sn5lCp7zTYvsF2gq5\nSgv0WWGEC0K57WGKR2nI52qYBlzxofwCaop5P2YAzgEaPxUWksPA/HxeZ0+v4an1\nz6tS0rM0mvVPhbBNtxqkZrc=\n-----END PRIVATE KEY-----\n",
+  "client_email": "dialogflow-rfuomo@movietv-showbuddy.iam.gserviceaccount.com",
+  "client_id": "116562957851587236212",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dialogflow-rfuomo%40movietv-showbuddy.iam.gserviceaccount.com"
+}
