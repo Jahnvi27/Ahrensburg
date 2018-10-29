@@ -21,9 +21,9 @@ TMDB Api to fetch responses for movies and tv-shows
 **Running the application**
 Its a flask application 
 Run the command: 
-```flask run```
+`flask run`
 This will start the application on local host port 5000
 http://localhost:5000/ 
 Currently we need to have ngrok running on the local to make the webhook accessible to dialogflow
 Command to host ngrok :
- ```ngrok http localhost:5000```
+ `ngrok http localhost:5000`
