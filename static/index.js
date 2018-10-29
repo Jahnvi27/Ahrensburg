@@ -49,19 +49,38 @@ function submit_message(text) {
   function handle_response(data) {
     console.log(data.message);
     console.log(data.intentId);
+
+    intentId = data.intentId.split("/")[4]
+
+    movieListDiv = '<ol>';
+    if (intentId == "a9a3281b-5018-421b-b9d3-d3ef3adaafda") {
+      movieList = data.message.split(",");
+      for (var movie in movieList) {
+        if (movieList[movie].trim() != "") {
+          movieListDiv = movieListDiv +
+            '<li style="width:100%">' +
+            movieList[movie] +
+            '</li>'
+        }
+      }
+      movieListDiv = movieListDiv + '</ol>';
+      document.getElementById("loading").innerHTML = movieListDiv;
+      document.getElementById("loading").id = "";
+      return;
+    }
+
     document.getElementById("loading").innerHTML = data.message;
     document.getElementById("loading").id = "";
 
-    intentId = data.intentId.split("/")[4]
-    if (intentId == "81a2a4da-ab61-4bef-917e-9aa2e7749da5") {
+    if (intentId == "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
       suggestion("Get Movie suggestions, Get TV-show suggestions");
-    } else if(intentId == "b155ff52-b516-4f64-ad43-9f9d76214966" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
+    } else if (intentId == "b155ff52-b516-4f64-ad43-9f9d76214966" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
       suggestion("Language, Genre, Cast");
     }
   }
 }
 
-function formSubmit(){
+function formSubmit() {
   document.getElementById("queryForm").submit();
 }
 
