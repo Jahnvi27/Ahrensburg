@@ -47,21 +47,21 @@ def get_detail():
     data = request.get_json(silent=True)
     results = data['result']
     scenario = results['action']
-
+    map_genre_ids = {'Action': 28, 'adventure': 12, 'Animation': 16, 'Comedy': 35, 'Crime': 80, 'Drama': 18, 'romantic': 10749, 'thriller': 53, 'Family': 10751}
+    map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
+    map_genre_ids.get('action')
     # if the intent type is for TV-SHOWS then enter this condition
     if 'TV-Shows' in scenario:
         names = ''
         parameters = results['parameters']
         genre = results['parameters']['Genre']
-        genre_id = get_genre_id()
-
+        genre_id = map_genre_ids.get(genre)
         language = results['parameters']['language']
-        language_id = get_language_id(language)
+        language_id = map_language_ids.get(language)
+        # A map is needed to store the ids of language and genre
         data = {'language': 'en-US',
                 'with_original_language': language_id,
-                'with_genres': genre_id
-                }
-        print(data)
+                'with_genres': genre_id}
         response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
         details = response.json()
         show_list = details['results']
@@ -72,6 +72,7 @@ def get_detail():
 
                 "fulfillment_text": names,
             }
+
         return jsonify(reply)
 
     else:
@@ -91,27 +92,3 @@ def get_detail():
         }
 
         return jsonify(reply)
-
-# makes call to get mapping between language and its id in TMDB db
-def get_language_id(language):
-    language_id = ""
-    with open('ISO-639-1-language.json') as f:
-        language_json = json.load(f)
-    if(language != None):
-        for lang in language_json:
-            print(lang)
-            if lang['name'].lower() == language.lower():
-                language_id = str(lang['code'])
-    return language_id
-
-# makes call to get mapping between genre and its id in TMDB db
-def get_genre_id(genre):
-    genre_id = ""
-    api_key = os.getenv('TMDB_API_KEY')
-
-    resp = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key={0}".format(api_key))
-    if(genre != None):
-        for gen in resp.json()['genres']:
-            print(gen)
-            if gen['name'].lower() == genre.lower():
-                genre_id = str(gen['id'])
