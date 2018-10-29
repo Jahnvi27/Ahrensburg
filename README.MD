@@ -16,7 +16,7 @@ Ngrok
 
 **External Software Used**
 Dialogflow as the A.I Agent
-TMDM Api to fetch responses for movies and tv-shows
+TMDB Api to fetch responses for movies and tv-shows
 
 **Running the application**
 Its a flask application 
