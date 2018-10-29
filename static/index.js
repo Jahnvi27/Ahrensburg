@@ -1,5 +1,16 @@
 $(document).ready(function() {
 
+  //-- Remove landing page
+  window.onscroll = function() {
+    var botFrame = document.getElementsByClassName('frame').item(0);
+    var frameOffset = botFrame.offsetTop;
+    var landingPage = document.getElementsByClassName('landingPage').item(0);
+    if (window.pageYOffset >= frameOffset && landingPage != null) {
+      landingPage.remove();
+      startConversation();
+    }
+  }
+
   // Method to capture user query as form data
   // and called when user queries through UI
   $('#queryForm').on('submit', function(e) {
@@ -12,7 +23,6 @@ $(document).ready(function() {
     if (!inputText) {
       return
     }
-    inputConversation("bot", "<div id=\"loading\"></div>");
     submit_message(inputText);
   });
 
@@ -23,16 +33,13 @@ $(document).ready(function() {
     $('html, body').animate({
       scrollTop: botFrame.offsetTop
     }, 500);
-    setTimeout(function() {
-      landingPage.remove();
-    }, 500);
-    startConversation();
   });
 });
 
 // Method to send user query in a form based object to server
 // and receive bot's response and insert in the UI
 function submit_message(text) {
+  inputConversation("bot", "<div id=\"loading\"></div>");
   console.log(text)
   $.post("/send_message", {
     message: text
@@ -40,27 +47,32 @@ function submit_message(text) {
 
   //Handles bot response
   function handle_response(data) {
-    console.log(data);
+    console.log(data.message);
+    console.log(data.intentId);
     document.getElementById("loading").innerHTML = data.message;
     document.getElementById("loading").id = "";
+
+    intentId = data.intentId.split("/")[4]
+    if (intentId == "81a2a4da-ab61-4bef-917e-9aa2e7749da5") {
+      suggestion("Get Movie suggestions, Get TV-show suggestions");
+    } else if(intentId == "b155ff52-b516-4f64-ad43-9f9d76214966" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
+      suggestion("Language, Genre, Cast");
+    }
   }
+}
+
+function formSubmit(){
+  document.getElementById("queryForm").submit();
 }
 
 //-- Method to print introductory conversation
 function startConversation() {
-  inputConversation("bot", "Hello, how are you today?");
+  inputConversation("bot", 'Hello, how are you doing today? <i class="em em-smiley_cat"></i>' +
+    '<br><br>I\'m here to help you find your favorite movie/tv-shows.' +
+    'You can either choose to answer few of our questions or click <i class="em em-three_button_mouse"></i> options from suggestion ' +
+    'bubbles to find your watch list.');
 }
 
-//-- Remove landing page
-window.onscroll = function() {
-  var botFrame = document.getElementsByClassName('frame').item(0);
-  var frameOffset = botFrame.offsetTop;
-  var landingPage = document.getElementsByClassName('landingPage').item(0);
-  if (window.pageYOffset >= frameOffset && landingPage != null) {
-    landingPage.remove();
-    startConversation();
-  }
-}
 
 // function to show the time in conversation
 function showTimeStamp(date) {
@@ -114,11 +126,15 @@ function inputConversation(userbot, message) {
 }
 
 function suggestion(message) {
-  var introField = "";
-  introField = '<li style="width:100%">' +
-    '<div class="center">' +
-    '<p>' + message + '</p>' +
-    '</div>' +
-    '</li>';
-  $("ul").append(introField).scrollTop($("ul").prop('scrollHeight'));
+  suggestionTexts = message.split(",");
+  var buttonFields = '<div class="center">';
+  for (var index in suggestionTexts) {
+    text = suggestionTexts[index].trim();
+    buttonFields = buttonFields +
+      '<button class="btn btn-primary btn-lg" style="width:100%; margin: 10px"' +
+      'onclick="submit_message(this.innerHTML.toLowerCase())">' + text + '</button>';
+  }
+  buttonFields = buttonFields + '</div>';
+
+  $("ul").append(buttonFields).scrollTop($("ul").prop('scrollHeight'));
 }

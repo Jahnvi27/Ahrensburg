@@ -26,7 +26,7 @@ def detect_intent(project_id, session_id, texts, language_code):
     query_input = dialogflow.types.QueryInput(text=text_input)
     response = session_client.detect_intent(
         session=session, query_input=query_input)
-    return response.query_result.fulfillment_text
+    return (response.query_result.fulfillment_text, response.query_result.intent.name)
 
 
 # api route to which when the user enter his comment it should be submitted.
@@ -36,8 +36,8 @@ def detect_intent(project_id, session_id, texts, language_code):
 def send_message():
     message = request.form['message']
     project_id = os.getenv('DIALOGFLOW_PROJECT_ID')
-    fulfillment_text = detect_intent(project_id, "unique", message, 'en')
-    response_text = {"message":  fulfillment_text}
+    fulfillment_text, intent_id = detect_intent(project_id, "unique", message, 'en')
+    response_text = {"message":  fulfillment_text, "intentId": intent_id}
     return jsonify(response_text)
 
 
@@ -51,43 +51,41 @@ def get_detail():
     map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
     # if the intent type is for TV-SHOWS then enter this condition
     if 'TV-Shows' in scenario:
-       names = ''
-       parameters = results['parameters']
-       genre = results['parameters']['Genre']
-       genre_id = map_genre_ids.get(genre)
-       language = results['parameters']['language']
-       language_id = map_language_ids.get(language)
-       # A map is needed to store the ids of language and genre
-       data = {'language': 'en-US',
-               'with_original_language': language_id,
-               'with_genres': genre_id}
-       response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
-       details = response.json()
-       show_list = details['results']
-       for show in show_list:
-           name = show['name']
-           names = names + name + ', '
-           reply = {
+        names = ''
+        parameters = results['parameters']
+        genre = results['parameters']['Genre']
+        genre_id = map_genre_ids.get(genre)
+        language = results['parameters']['language']
+        language_id = map_language_ids.get(language)
+        # A map is needed to store the ids of language and genre
+        data = {'language': 'en-US',
+                'with_original_language': language_id,
+                'with_genres': genre_id}
+        response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+        details = response.json()
+        show_list = details['results']
+        for show in show_list:
+            name = show['name']
+            names = names + name + ', '
+            reply = {
+                "fulfillment_text": names,
+            }
 
-             "fulfillment_text": names,
-           }
-
-       return jsonify(reply)
+        return jsonify(reply)
 
     else:
-      movie = data['queryResult']['parameters']['movie']
-      detail = requests.get('https://api.themoviedb.org/3/movie/{0}?api_key={1}'.format(movie, api_key)).content
-      detail = json.loads(detail)
-      response = """
+        movie = data['queryResult']['parameters']['movie']
+        detail = requests.get('https://api.themoviedb.org/3/movie/{0}?api_key={1}'.format(movie, api_key)).content
+        detail = json.loads(detail)
+        response = """
         original_title : {0}
         release_date: {1}
         runtime: {2}
         overview: {3}
        """.format(detail['Title'], detail['Release Date'], detail['Runtime'], detail['Plot'])
 
-      reply = {
-
-        "fulfillment_text": response,
+        reply = {
+            "fulfillment_text": response,
         }
 
-      return jsonify(reply)
+        return jsonify(reply)
