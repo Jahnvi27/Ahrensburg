@@ -45,8 +45,9 @@ def send_message():
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
     data = request.get_json(silent=True)
-    results = data['result']
-    movie = data['result']['parameters']
+    results = data['queryResult']
+    movie = data['queryResult']['parameters']
+    print(movie)
     scenario = results['action']
     map_genre_ids = {'Action': 28, 'adventure': 12, 'Animation': 16, 'Comedy': 35, 'Crime': 80, 'Drama': 18, 'romantic': 10749, 'thriller': 53, 'Family': 10751}
     map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
@@ -84,12 +85,13 @@ def get_detail():
         genre_id = 0
         # Fetch genre id
         for item in genre_detail['genres']:
-            if item['name'] == movie['genre']:
+            if item['name'] == movie['Genre']:
                 genre_id = item['id']
                 break
 
         language_detail = requests.get('https://api.themoviedb.org/3/configuration/languages?api_key={0}'.format(api_key))
         language_detail = json.loads(language_detail.content)
+
         # Fetch language id
         for item in language_detail:
             if item['english_name'] == movie['language']:
