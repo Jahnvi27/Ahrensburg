@@ -45,11 +45,10 @@ def send_message():
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
     data = request.get_json(silent=True)
-    results = data['result']
+    results = data['queryResult']
     scenario = results['action']
     map_genre_ids = {'Action': 28, 'adventure': 12, 'Animation': 16, 'Comedy': 35, 'Crime': 80, 'Drama': 18, 'romantic': 10749, 'thriller': 53, 'Family': 10751}
     map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
-    map_genre_ids.get('action')
     # if the intent type is for TV-SHOWS then enter this condition
     if 'TV-Shows' in scenario:
        names = ''
