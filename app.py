@@ -58,22 +58,46 @@ def get_detail():
         genre_id = map_genre_ids.get(genre)
         language = results['parameters']['language']
         language_id = map_language_ids.get(language)
-        # A map is needed to store the ids of language and genre
-        data = {'language': 'en-US',
-                'with_original_language': language_id,
-                'with_genres': genre_id}
-        response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
-        details = response.json()
-        show_list = details['results']
-        for show in show_list:
-            name = show['name']
-            names = names + name + ', '
+        # If ratings is provided by the user then follow this condition
+        if 'Ratings' in parameters:
+            ratings = results['parameters']['Ratings']
+            data = {'language': 'en-US',
+                    'with_original_language' : language_id,
+                    'with_genres': genre_id,
+                    'vote_average.gte': ratings
+                    }
+            response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+            details = response.json()
+            show_list = details['results']
+            # display the show name along with the ratings of the show
+            for show in show_list:
+                name = show['name']
+                rating = show['vote_average']
+                display = name + ' --- ' + str(rating)
+                names = names + display + ', '
             reply = {
 
                 "fulfillment_text": names,
-            }
+              }
+            return jsonify(reply)
 
-        return jsonify(reply)
+        else:
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id}
+            response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+
+            details = response.json()
+            show_list = details['results']
+            for show in show_list:
+                name = show['name']
+                names = names + name + ', '
+            reply = {
+
+                "fulfillment_text": names,
+              }
+
+            return jsonify(reply)
 
     # If the intent is for Movie
     elif 'Movies' in scenario:
