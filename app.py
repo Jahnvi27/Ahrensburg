@@ -59,7 +59,7 @@ def get_detail():
         language = results['parameters']['language']
         language_id = map_language_ids.get(language)
         # If ratings is provided by the user then follow this condition
-        if 'Ratings' in parameters:
+        if 'Ratings' in parameters and len(results['parameters']['Ratings']) != 0:
             ratings = results['parameters']['Ratings']
             data = {'language': 'en-US',
                     'with_original_language' : language_id,
@@ -70,17 +70,49 @@ def get_detail():
             details = response.json()
             show_list = details['results']
             # display the show name along with the ratings of the show
-            for show in show_list:
-                name = show['name']
-                rating = show['vote_average']
-                display = name + ' --- ' + str(rating)
-                names = names + display + ', '
-            reply = {
+            if len(show_list) > 0:
+                for show in show_list:
+                    name = show['name']
+                    rating = show['vote_average']
+                    display = name + ' ---- ' + str(rating)
+                    names = names + display + '| '
+                reply = {
 
-                "fulfillment_text": names,
-              }
-            return jsonify(reply)
+                    "fulfillment_text": names,
+                   }
+                return jsonify(reply)
+            else:
+                reply = {
 
+                    "fulfillment_text": "Sorry!!! there are no tv-shows for the mentioned year. Can you try with another input?? ",
+                }
+                return jsonify(reply)
+
+        elif 'Year' in parameters and len(results['parameters']['Year']) != 0:
+            year = results['parameters']['Year']
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id,
+                    'first_air_date_year': year
+                    }
+            response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+            details = response.json()
+            show_list = details['results']
+            if len(show_list) > 0:
+                for show in show_list:
+                    name = show['name']
+                    names = names + name + '| '
+                reply = {
+
+                    "fulfillment_text": names,
+                   }
+                return jsonify(reply)
+            else:
+                reply = {
+
+                    "fulfillment_text": "Sorry!!! there are no tv-shows for the mentioned year. Can you try with another input?? ",
+                }
+                return jsonify(reply)
         else:
             data = {'language': 'en-US',
                     'with_original_language': language_id,
@@ -91,7 +123,9 @@ def get_detail():
             show_list = details['results']
             for show in show_list:
                 name = show['name']
-                names = names + name + ', '
+                overview = show['overview']
+                display = name + ' ---- ' + overview
+                names = names + display + '| '
             reply = {
 
                 "fulfillment_text": names,
