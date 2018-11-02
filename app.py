@@ -84,7 +84,7 @@ def get_detail():
             else:
                 reply = {
 
-                    "fulfillment_text": "Sorry!!! there are no tv-shows for the mentioned year. Can you try with another input?? ",
+                    "fulfillment_text": "Sorry!!! there are no tv-shows for the mentioned rating. Can you try with another input?? ",
                 }
                 return jsonify(reply)
 
