@@ -58,22 +58,46 @@ def get_detail():
         genre_id = map_genre_ids.get(genre)
         language = results['parameters']['language']
         language_id = map_language_ids.get(language)
-        # A map is needed to store the ids of language and genre
-        data = {'language': 'en-US',
-                'with_original_language': language_id,
-                'with_genres': genre_id}
-        response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
-        details = response.json()
-        show_list = details['results']
-        for show in show_list:
-            name = show['name']
-            names = names + name + ', '
+        # If ratings is provided by the user then follow this condition
+        if 'Ratings' in parameters:
+            ratings = results['parameters']['Ratings']
+            data = {'language': 'en-US',
+                    'with_original_language' : language_id,
+                    'with_genres': genre_id,
+                    'vote_average.gte': ratings
+                    }
+            response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+            details = response.json()
+            show_list = details['results']
+            # display the show name along with the ratings of the show
+            for show in show_list:
+                name = show['name']
+                rating = show['vote_average']
+                display = name + ' --- ' + str(rating)
+                names = names + display + ', '
             reply = {
 
                 "fulfillment_text": names,
-            }
+              }
+            return jsonify(reply)
 
-        return jsonify(reply)
+        else:
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id}
+            response = requests.get("https://api.themoviedb.org/3/discover/tv?api_key={0}".format(api_key), params=data)
+
+            details = response.json()
+            show_list = details['results']
+            for show in show_list:
+                name = show['name']
+                names = names + name + ', '
+            reply = {
+
+                "fulfillment_text": names,
+              }
+
+            return jsonify(reply)
 
     # If the intent is for Movie
     elif 'Movies' in scenario:
@@ -82,22 +106,34 @@ def get_detail():
         genre_id = 0
         # Fetch genre id
         for item in genre_detail['genres']:
-            if item['name'] == movie['Genre']:
-               genre_id = item['id']
-            break
+            if item['name'] == movie['genre']:
+                genre_id = item['id']
+                break
 
         language_detail = requests.get('https://api.themoviedb.org/3/configuration/languages?api_key={0}'.format(api_key))
         language_detail = json.loads(language_detail.content)
-
+        language_id = ""
         # Fetch language id
         for item in language_detail:
             if item['english_name'] == movie['language']:
-               language_id = item['iso_639_1']
-            break
-
-        data = {'language': 'en-US',
-                'with_original_language': language_id,
-                'with_genres': genre_id}
+                language_id = item['iso_639_1']
+                break
+        cast_id = 0
+        if "Cast" in movie:
+            cast_detail = requests.get('http://api.tmdb.org/3/search/person?api_key={0}&query={1}'.format(api_key, movie['Cast']))
+            cast_detail = json.loads(cast_detail.content)
+            print(cast_detail)
+            cast_id = cast_detail['results'][0]['id']
+            print(cast_id)
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id,
+                    'with_cast': cast_id
+                    }
+        else:
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id}
 
         detail = requests.get('https://api.themoviedb.org/3/discover/movie?api_key={0}'.format(api_key), params=data)
         detail = detail.json()
@@ -105,7 +141,7 @@ def get_detail():
         titles = ''
 
         for item in detail['results']:
-            title = item['original_title']
+            title = item['title']
             titles = titles + title + ', '
             reply = {
 
