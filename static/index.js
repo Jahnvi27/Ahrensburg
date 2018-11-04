@@ -36,6 +36,12 @@ $(document).ready(function() {
   });
 });
 
+//Icon Click submits message
+function submitForm(){
+  console.log("ok");
+  $('#queryForm').submit();
+}
+
 // Method to send user query in a form based object to server
 // and receive bot's response and insert in the UI
 function submit_message(text) {
@@ -66,6 +72,7 @@ function submit_message(text) {
       movieListDiv = movieListDiv + '</ol>';
       document.getElementById("loading").innerHTML = movieListDiv;
       document.getElementById("loading").id = "";
+      inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
       if (intentId == 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId == '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
         suggestion("Year, Rating, Cast");
       } else if (intentId == 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
@@ -82,6 +89,7 @@ function submit_message(text) {
     } else if (intentId == "b155ff52-b516-4f64-ad43-9f9d76214966" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
       suggestion("Language, Genre, Cast");
     }
+    $("ul").scrollTop($("ul").prop('scrollHeight'));
   }
 }
 
@@ -151,7 +159,7 @@ function inputConversation(userbot, message) {
 
 function suggestion(message) {
   suggestionTexts = message.split(",");
-  var buttonFields = '<div class="center">';
+  var buttonFields = '<div class="center suggestion">';
   for (var index in suggestionTexts) {
     text = suggestionTexts[index].trim();
     buttonFields = buttonFields +
