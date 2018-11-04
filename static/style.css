@@ -110,6 +110,7 @@ body {
 
 .box {
  width: auto;
+ max-width: 80%;
  float: left;
  background: #ffffff;
 }

@@ -36,6 +36,12 @@ $(document).ready(function() {
   });
 });
 
+//Icon Click submits message
+function submitForm(){
+  console.log("ok");
+  $('#queryForm').submit();
+}
+
 // Method to send user query in a form based object to server
 // and receive bot's response and insert in the UI
 function submit_message(text) {
@@ -82,6 +88,7 @@ function submit_message(text) {
     } else if (intentId == "b155ff52-b516-4f64-ad43-9f9d76214966" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
       suggestion("Language, Genre, Cast");
     }
+    $("ul").scrollTop($("ul").prop('scrollHeight'));
   }
 }
 
