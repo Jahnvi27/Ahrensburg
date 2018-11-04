@@ -53,8 +53,8 @@ function submit_message(text) {
     intentId = data.intentId.split("/")[4]
 
     movieListDiv = '<ol>';
-    if (intentId == "a9a3281b-5018-421b-b9d3-d3ef3adaafda") {
-      movieList = data.message.split(",");
+    if (data.message.includes("|")) {
+      movieList = data.message.split("|");
       for (var movie in movieList) {
         if (movieList[movie].trim() != "") {
           movieListDiv = movieListDiv +
