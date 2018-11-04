@@ -153,16 +153,20 @@ def get_detail():
                 language_id = item['iso_639_1']
                 break
         cast_id = 0
-        if "Cast" in movie:
+        if 'Cast' in movie and len(movie['Cast']) != 0:
             cast_detail = requests.get('http://api.tmdb.org/3/search/person?api_key={0}&query={1}'.format(api_key, movie['Cast']))
             cast_detail = json.loads(cast_detail.content)
-            print(cast_detail)
             cast_id = cast_detail['results'][0]['id']
-            print(cast_id)
             data = {'language': 'en-US',
                     'with_original_language': language_id,
                     'with_genres': genre_id,
                     'with_cast': cast_id
+                    }
+        elif "Year" in movie and len(movie['Year']) != 0:
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id,
+                    'year': movie['Year']
                     }
         else:
             data = {'language': 'en-US',
@@ -174,12 +178,19 @@ def get_detail():
 
         titles = ''
 
-        for item in detail['results']:
-            title = item['title']
-            titles = titles + title + ', '
+        if len(detail['results']) > 0:
+            for item in detail['results']:
+                title = item['title']
+                titles = titles + title + '| '
+                reply = {
+
+                    "fulfillment_text": titles,
+
+                }
+        else:
             reply = {
 
-               "fulfillment_text": titles,
+                "fulfillment_text": "Sorry!!! there are no movies according to your choice. Can you make some other selection?"
 
             }
 
