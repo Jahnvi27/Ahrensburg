@@ -47,6 +47,10 @@ body {
  background: #ffffff;
 }
 
+.suggestion{
+  padding: 30px;
+}
+
 .text {
  width: 85%;
  display: flex;
