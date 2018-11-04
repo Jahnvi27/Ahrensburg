@@ -66,11 +66,6 @@ function submit_message(text) {
       movieListDiv = movieListDiv + '</ol>';
       document.getElementById("loading").innerHTML = movieListDiv;
       document.getElementById("loading").id = "";
-      if (intentId == 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId == '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
-        suggestion("Year, Rating, Cast");
-      } else if (intentId == 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
-        suggestion("Year, Rating");
-      }
       return;
     }
 
