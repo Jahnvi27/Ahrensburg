@@ -166,12 +166,19 @@ def get_detail():
             data = {'language': 'en-US',
                     'with_original_language': language_id,
                     'with_genres': genre_id,
-                    'year': movie['Year']
+                    'primary_release_year': movie['Year']
+                    }
+        elif "Ratings" in movie and len(movie['Ratings']) != 0:
+            data = {'language': 'en-US',
+                    'with_original_language': language_id,
+                    'with_genres': genre_id,
+                    'vote_average.gte': movie['Ratings']
                     }
         else:
             data = {'language': 'en-US',
                     'with_original_language': language_id,
-                    'with_genres': genre_id}
+                    'with_genres': genre_id,
+                    }
 
         detail = requests.get('https://api.themoviedb.org/3/discover/movie?api_key={0}'.format(api_key), params=data)
         detail = detail.json()
@@ -186,7 +193,7 @@ def get_detail():
 
                     "fulfillment_text": titles,
 
-                }
+                    }
         else:
             reply = {
 
