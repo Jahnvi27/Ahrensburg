@@ -27,3 +27,7 @@ http://localhost:5000/
 Currently we need to have ngrok running on the local to make the webhook accessible to dialogflow
 Command to host ngrok :
  `ngrok http localhost:5000`
+ 
+ **Access The Chat-Bot**
+ The chatBot can be directly accessed by clicking on the following [url](ec2-13-57-7-81.us-west-1.compute.amazonaws.com) 
+ 
