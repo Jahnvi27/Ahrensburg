@@ -29,5 +29,5 @@ Command to host ngrok :
  `ngrok http localhost:5000`
  
  **Access The Chat-Bot**
- The chatBot can be directly accessed by clicking on the following [url](ec2-13-57-7-81.us-west-1.compute.amazonaws.com) 
+ The chatBot can be directly accessed by clicking on the following url ec2-13-57-7-81.us-west-1.compute.amazonaws.com 
  
