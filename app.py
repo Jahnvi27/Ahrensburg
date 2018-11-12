@@ -72,7 +72,6 @@ def fetch_filter_details():
 @app.route('/get_detail', methods=['POST'])
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
-    fetch_entities()
     data = request.get_json(silent=True)
     results = data['queryResult']
     scenario = results['action']
