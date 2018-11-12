@@ -41,9 +41,38 @@ def send_message():
     return jsonify(response_text)
 
 
+def fetch_entities():
+    url = "https://api.dialogflow.com/v1/entities"
+    headers = {'Content-Type': 'application/json',
+               'authorization': os.getenv('dev_token')}
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+
+@app.route('/filter_details', methods=['GET'])
+def fetch_filter_details():
+    entities = fetch_entities()
+    filters = ''
+    for entity in entities:
+        if entity['name'] == 'Filters':
+            entity_id = entity['id']
+            break
+
+    headers = {'Content-Type': 'application/json',
+               'authorization': os.getenv('dev_token')}
+    entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
+                                   headers=headers)
+    entity_details = entity_response.json()
+    for entry in entity_details['entries']:
+        filters = filters + entry['value'] + ' | '
+    response_text = {"message":  filters}
+    return jsonify(response_text)
+
+
 @app.route('/get_detail', methods=['POST'])
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
+    fetch_entities()
     data = request.get_json(silent=True)
     results = data['queryResult']
     scenario = results['action']
