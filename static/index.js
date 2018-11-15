@@ -92,11 +92,18 @@ function submit_message(text) {
 
     if (intentId == "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
       suggestion("Get Movie suggestions| Get TV-show suggestions");
-    } else if (intentId == "5bb8d797-a892-4dc1-b461-a8576a0eb91b" || intentId == "7fd87c4b-bef2-4b4d-8e1a-748115f5a7bc") {
+    } else if (intentId == "5bb8d797-a892-4dc1-b461-a8576a0eb91b") {
       filters = getFilters();
       setTimeout(function() {
         suggestion(filters);
-      }, 1000);
+      }, 500);
+    }
+    else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
+     filters = getFilters();
+      setTimeout(function() {
+        filters = filters.replace("cast", "");
+        suggestion(filters);
+      }, 500);
     }
     $("ul").scrollTop($("ul").prop('scrollHeight'));
   }

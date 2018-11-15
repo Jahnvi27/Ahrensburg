@@ -79,7 +79,7 @@ def get_detail():
     map_genre_ids = {'Action': 28, 'adventure': 12, 'Animation': 16, 'Comedy': 35, 'Crime': 80, 'Drama': 18, 'romantic': 10749, 'thriller': 53, 'Family': 10751}
     map_language_ids = {'English': 'en', 'German': 'de', 'French': 'fr', 'Spanish': 'es', 'Korean': 'ko', 'Chinese': 'zh'}
     # if the intent type is for TV-SHOWS then enter this condition
-    if 'TV-Shows' in scenario:
+    if 'TV-Shows' in scenario or scenario == 'TV-Suggestion.TV-Suggestion-custom.TV-Suggestion-custom-custom':
         names = ''
         parameters = results['parameters']
         genre = results['parameters']['Genre']
@@ -230,3 +230,7 @@ def get_detail():
             }
 
         return jsonify(reply)
+
+
+
+
