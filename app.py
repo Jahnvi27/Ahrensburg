@@ -162,13 +162,13 @@ def get_detail():
             return jsonify(reply)
 
     # If the intent is for Movie
-    elif 'Movies' in scenario:
+    elif 'Movie' in scenario:
         genre_detail = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key={0}'.format(api_key))
         genre_detail = json.loads(genre_detail.content)
-        genre_id = 0
+        genre_id = ''
         # Fetch genre id
         for item in genre_detail['genres']:
-            if item['name'] == movie['genre']:
+            if item['name'] == movie['Genre'] and movie['Genre'] is not None:
                 genre_id = item['id']
                 break
 
@@ -216,7 +216,18 @@ def get_detail():
         if len(detail['results']) > 0:
             for item in detail['results']:
                 title = item['title']
-                titles = titles + title + '| '
+                movie_id = item['id']
+                movie_rating = item['vote_average']
+                movie_overview = item['overview']
+                movie_poster = item['poster_path']
+                if movie_poster is not None:
+                    movie_poster_url = "http://image.tmdb.org/t/p/w185/" + movie_poster
+                else:
+                    movie_poster_url = ""
+
+                final_output = title + '##' + str(movie_id) + '##' + movie_overview + '##' + movie_poster_url + '##' + str(movie_rating)
+                titles = titles + final_output + '| '
+
                 reply = {
 
                     "fulfillment_text": titles,
