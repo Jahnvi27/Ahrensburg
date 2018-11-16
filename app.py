@@ -231,6 +231,46 @@ def get_detail():
 
         return jsonify(reply)
 
+    elif scenario == 'TV-Suggestion.TV-Suggestion-custom':
+        headers = {'Content-Type': 'application/json',
+                   'authorization': os.getenv('dev_token')}
+        values = ''
+        entity_id = ''
+        entities = fetch_entities()
+        parameters = results['parameters']
+        if 'genre' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Genre':
+                    entity_id = entity['id']
+                    break
+        elif 'language' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'language':
+                    entity_id = entity['id']
+                    break
+        elif 'year' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Year':
+                    entity_id = entity['id']
+                    break
+        elif 'ratings' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Ratings':
+                    entity_id = entity['id']
+                    break
+
+        entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
+                                       headers=headers)
+        entity_details = entity_response.json()
+        for entry in entity_details['entries']:
+            values = values + entry['value'] + ' | '
+        reply = {
+
+            "fulfillment_text": values,
+        }
+        return jsonify(reply)
+
+
 
 
 
