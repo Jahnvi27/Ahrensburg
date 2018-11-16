@@ -75,7 +75,6 @@ def get_video_details():
     show_id = request.args.get('show_id')
     video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id))
     video_details = video_info.json()
-    print(video_details)
     if len(video_details['results']) > 0:
         yt_key = video_details['results'][0]['key']
     else:
