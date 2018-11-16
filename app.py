@@ -70,15 +70,17 @@ def fetch_filter_details():
 
 
 @app.route('/fetch_video_url', methods=['GET'])
-def get_video_details(show_id):
+def get_video_details():
     api_key = os.getenv('TMDB_API_KEY')
-    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id),)
+    show_id = request.args.get('show_id')
+    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id))
     video_details = video_info.json()
+    print(video_details)
     if len(video_details['results']) > 0:
         yt_key = video_details['results'][0]['key']
     else:
         yt_key = ""
-    yt_url = "https://www.youtube.com/watch?v=" + yt_key
+    yt_url = "https://www.youtube.com/embed/" + yt_key
     response_text = {"message": yt_url}
     return jsonify(response_text)
 
@@ -290,8 +292,3 @@ def get_detail():
             "fulfillment_text": values,
         }
         return jsonify(reply)
-
-
-
-
-

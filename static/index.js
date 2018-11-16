@@ -34,11 +34,11 @@ $(document).ready(function() {
       scrollTop: botFrame.offsetTop
     }, 500);
   });
+
 });
 
 //Icon Click submits message
 function submitForm() {
-  console.log("ok");
   $('#queryForm').submit();
 }
 
@@ -46,32 +46,17 @@ function submitForm() {
 // and receive bot's response and insert in the UI
 function submit_message(text) {
   inputConversation("bot", "<div id=\"loading\"></div>");
-  console.log(text)
   $.post("/send_message", {
     message: text
   }, handle_response);
 
   //Handles bot response
   function handle_response(data) {
-    console.log(data.message);
-    console.log(data.intentId);
 
     intentId = data.intentId.split("/")[4]
 
-    movieListDiv = '<ol>';
     if (data.message.includes("|")) {
-      movieList = data.message.split("|");
-      for (var movie in movieList) {
-        if (movieList[movie].trim() != "") {
-          movieListDiv = movieListDiv +
-            '<li style="width:100%">' +
-            movieList[movie] +
-            '</li>'
-        }
-      }
-      movieListDiv = movieListDiv + '</ol>';
-      document.getElementById("loading").innerHTML = movieListDiv;
-      document.getElementById("loading").id = "";
+      displayMovies(data.message);
       inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
       filters = getFilters();
       setTimeout(function() {
@@ -97,9 +82,8 @@ function submit_message(text) {
       setTimeout(function() {
         suggestion(filters);
       }, 500);
-    }
-    else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
-     filters = getFilters();
+    } else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
+      filters = getFilters();
       setTimeout(function() {
         filters = filters.replace("cast", "");
         suggestion(filters);
@@ -120,10 +104,72 @@ function getFilters() {
   filters = "";
 
   function handle_response(data) {
-    console.log(data.message);
     filters = data.message;
     return filters;
   }
+}
+
+//--Method to call fetch_video_url method in server
+function displayMovieDetails(show_id){
+  $.get("/fetch_video_url", {
+    show_id: show_id
+  }, handle_response);
+
+  function handle_response(data){
+    setTimeout(function () {
+      if(document.getElementById("trailerDiv") != null){
+        document.getElementById("trailerDiv").remove();
+      }
+
+      var description = document.getElementsByClassName(show_id)[0].value
+      var title = document.getElementsByClassName(show_id)[1].innerHTML
+      trailerDiv = '<div id="trailerDiv">' +
+      '<iframe width="502" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
+      '<a class="preview-description center" href="#" onclick="showTrailer()"><b>Watch trailer</b></a>' +
+      '<p class="preview-description"><b>' + title + '</b></p>' +
+      '<p class="preview-description"><I>' + description + '</I></p>' +
+      '</div>';
+      $("ul").append(trailerDiv).scrollTop($("ul").prop('scrollHeight'));
+      $("iframe").hide();
+    }, 1000);
+  }
+}
+
+function showTrailer(){
+  $("iframe").show();
+  $("ul").scrollTop($("ul").prop('scrollHeight'));
+}
+//-- Method to display Movies
+function displayMovies(movieDetails) {
+  movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px;"> <tr">';
+  movieDetailList = movieDetails.split("|");
+
+  for (var movie in movieDetailList) {
+    if (movieDetailList[movie].trim() != "") {
+      movieAttr = movieDetailList[movie].split("##");
+      if(movieAttr[3].trim() == ""){
+        movieAttr[3] = "/static/image/default-poster.png";
+      }
+      movieListDiv = movieListDiv +
+        '<td class="preview-td" id="' + movieAttr[1] + '" onclick="displayMovieDetails(this.id)">' +
+        '<div class="preview-box">' +
+        '<img class="preview-img" src=\'' + movieAttr[3] + '\'/>' +
+        '</div>' +
+        '<input class="' + movieAttr[1] + '" type="text" value=\'' + movieAttr[2] + '\' hidden>' +
+        '<p class="preview-title ' + movieAttr[1] + '">' + movieAttr[0] + '</p>' +
+        '</td>';
+        if(movieDetailList[parseInt(movie) + 1] === null){
+          movieListDiv = movieListDiv + '</tr>';
+        }
+        if (movie%2 != 0) {
+          movieListDiv = movieListDiv + '</tr><tr>';
+        }
+    }
+  }
+  movieListDiv = movieListDiv + '</table>';
+  document.getElementById("loading").innerHTML = 'Here are some cool ones on top of mind that you might like... <i class="em em-wink"></i>';
+  document.getElementById("loading").id = '';
+  $("ul").append(movieListDiv).scrollTop($("ul").prop('scrollHeight'));
 }
 
 //-- Method to print introductory conversation
@@ -187,7 +233,6 @@ function inputConversation(userbot, message) {
 }
 
 function suggestion(message) {
-  console.log(message);
   suggestionTexts = message.split("|");
   var buttonFields = '<div class="center suggestion">';
   for (var index in suggestionTexts) {

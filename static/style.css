@@ -53,7 +53,65 @@ body {
   flex-wrap: wrap;
 }
 
-.suggestion-btn{
+.preview-td {
+  width: 185px;
+  padding: 4px;
+}
+
+.preview-box {
+  width: 185px;
+  height: 278px;
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  position: relative;
+  border-style: solid;
+  border-width: 3px;
+  border-color: whitesmoke;
+  border-top-right-radius: 8px;
+}
+
+.preview-img {
+  position: absolute;
+  left: -100%;
+  right: -100%;
+  top: -100%;
+  bottom: -100%;
+  margin: auto;
+  min-height: 100%;
+  min-width: 100%;
+  cursor: pointer;
+}
+
+.preview-title {
+  background-color: whitesmoke;
+  border-bottom-left-radius: 8px;
+  font-weight: bold;
+  border-style: outset;
+  border-color: #fff;
+  font-size: 9pt;
+  border-bottom-right-radius: 8px;
+  align-content: center;
+  text-align: center;
+  font-family: 'Courier New';
+  cursor: pointer;
+}
+
+.preview-description {
+  padding-left: 1.5px;
+  font-family: 'Courier New';
+  font-size: 9pt;
+}
+
+#trailerDiv{
+  padding-top: 6px;
+  border-radius: 8px;
+  border-style: outset;
+  border-width: 5px;
+  border-color: whitesmoke;
+  background-color: whitesmoke;
+}
+
+.suggestion-btn {
   text-transform: capitalize;
   margin: 10px;
   min-width: 30%;
