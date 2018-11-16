@@ -102,7 +102,14 @@ def get_detail():
                 for show in show_list:
                     name = show['name']
                     rating = show['vote_average']
-                    display = name + ' ---- ' + str(rating)
+                    poster_path = show['poster_path']
+                    tv_id = show['id']
+                    overview = show['overview']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                     names = names + display + '| '
                 reply = {
 
@@ -129,7 +136,16 @@ def get_detail():
             if len(show_list) > 0:
                 for show in show_list:
                     name = show['name']
-                    names = names + name + '| '
+                    tv_id = show['id']
+                    overview = show['overview']
+                    rating = show['vote_average']
+                    poster_path = show['poster_path']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
+                    names = names + display + '| '
                 reply = {
 
                     "fulfillment_text": names,
@@ -151,8 +167,15 @@ def get_detail():
             show_list = details['results']
             for show in show_list:
                 name = show['name']
+                tv_id = show['id']
+                rating = show['vote_average']
                 overview = show['overview']
-                display = name + ' ---- ' + overview
+                poster_path = show['poster_path']
+                if poster_path is not None:
+                    final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                else:
+                    final_path = ""
+                display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                 names = names + display + '| '
             reply = {
 
