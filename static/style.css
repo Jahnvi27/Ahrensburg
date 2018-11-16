@@ -102,7 +102,7 @@ body {
   font-size: 9pt;
 }
 
-#trailerDiv{
+#trailerDiv {
   padding-top: 6px;
   border-radius: 8px;
   border-style: outset;
@@ -176,6 +176,9 @@ body {
 .box-right {
   float: right;
   background: white;
+  border-style: outset;
+  border-radius: 10px;
+  border-color: #b2f880;
 }
 
 .box {
@@ -183,6 +186,9 @@ body {
   max-width: 80%;
   float: left;
   background: #ffffff;
+  border-radius: 15px;
+  border-style: outset;
+  border-color: #b2f880;
 }
 
 .frame {
@@ -220,7 +226,7 @@ body>div>div>div.box-right.macro {
   position: relative;
   border-style: solid;
   border-width: 0 13px 13px 0;
-  border-color: transparent whitesmoke transparent transparent;
+  border-color: transparent #fff transparent transparent;
 }
 
 ul {
@@ -284,7 +290,7 @@ ul {
   position: relative;
   border-style: solid;
   border-width: 13px 13px 0 0;
-  border-color: #ffffff transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
 }
 
 input:focus {

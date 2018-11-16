@@ -124,7 +124,7 @@ function displayMovieDetails(show_id){
       var description = document.getElementsByClassName(show_id)[0].value
       var title = document.getElementsByClassName(show_id)[1].innerHTML
       trailerDiv = '<div id="trailerDiv">' +
-      '<iframe width="502" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
+      '<iframe width="100%" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
       '<a class="preview-description center" href="#" onclick="showTrailer()"><b>Watch trailer</b></a>' +
       '<p class="preview-description"><b>' + title + '</b></p>' +
       '<p class="preview-description"><I>' + description + '</I></p>' +
