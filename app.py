@@ -69,6 +69,20 @@ def fetch_filter_details():
     return jsonify(response_text)
 
 
+@app.route('/fetch_video_url', methods=['GET'])
+def get_video_details(show_id):
+    api_key = os.getenv('TMDB_API_KEY')
+    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id),)
+    video_details = video_info.json()
+    if len(video_details['results']) > 0:
+        yt_key = video_details['results'][0]['key']
+    else:
+        yt_key = ""
+    yt_url = "https://www.youtube.com/watch?v=" + yt_key
+    response_text = {"message": yt_url}
+    return jsonify(response_text)
+
+
 @app.route('/get_detail', methods=['POST'])
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
