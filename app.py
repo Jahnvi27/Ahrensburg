@@ -153,6 +153,12 @@ def get_detail():
                 name = show['name']
                 overview = show['overview']
                 display = name + ' ---- ' + overview
+                poster_path = show['poster_path']
+                if poster_path is not None:
+                    final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                else:
+                    final_path = ""
+                display = name + '##' + overview + "##" + final_path
                 names = names + display + '| '
             reply = {
 
