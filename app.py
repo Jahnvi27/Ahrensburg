@@ -69,20 +69,6 @@ def fetch_filter_details():
     return jsonify(response_text)
 
 
-@app.route('/fetch_video_url', methods=['GET'])
-def get_video_details(show_id):
-    api_key = os.getenv('TMDB_API_KEY')
-    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id),)
-    video_details = video_info.json()
-    if len(video_details['results']) > 0:
-        yt_key = video_details['results'][0]['key']
-    else:
-        yt_key = ""
-    yt_url = "https://www.youtube.com/watch?v=" + yt_key
-    response_text = {"message": yt_url}
-    return jsonify(response_text)
-
-
 @app.route('/get_detail', methods=['POST'])
 def get_detail():
     api_key = os.getenv('TMDB_API_KEY')
@@ -116,7 +102,14 @@ def get_detail():
                 for show in show_list:
                     name = show['name']
                     rating = show['vote_average']
-                    display = name + ' ---- ' + str(rating)
+                    poster_path = show['poster_path']
+                    tv_id = show['id']
+                    overview = show['overview']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                     names = names + display + '| '
                 reply = {
 
@@ -143,7 +136,16 @@ def get_detail():
             if len(show_list) > 0:
                 for show in show_list:
                     name = show['name']
-                    names = names + name + '| '
+                    tv_id = show['id']
+                    overview = show['overview']
+                    rating = show['vote_average']
+                    poster_path = show['poster_path']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
+                    names = names + display + '| '
                 reply = {
 
                     "fulfillment_text": names,
@@ -165,15 +167,15 @@ def get_detail():
             show_list = details['results']
             for show in show_list:
                 name = show['name']
+                tv_id = show['id']
+                rating = show['vote_average']
                 overview = show['overview']
-                display = name + ' ---- ' + overview
                 poster_path = show['poster_path']
                 if poster_path is not None:
                     final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
                 else:
                     final_path = ""
-                tv_id = show['id']
-                display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path
+                display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                 names = names + display + '| '
             reply = {
 
@@ -251,6 +253,46 @@ def get_detail():
             }
 
         return jsonify(reply)
+
+    elif scenario == 'TV-Suggestion.TV-Suggestion-custom':
+        headers = {'Content-Type': 'application/json',
+                   'authorization': os.getenv('dev_token')}
+        values = ''
+        entity_id = ''
+        entities = fetch_entities()
+        parameters = results['parameters']
+        if 'genre' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Genre':
+                    entity_id = entity['id']
+                    break
+        elif 'language' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'language':
+                    entity_id = entity['id']
+                    break
+        elif 'year' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Year':
+                    entity_id = entity['id']
+                    break
+        elif 'rating' in parameters['Filters']:
+            for entity in entities:
+                if entity['name'] == 'Ratings':
+                    entity_id = entity['id']
+                    break
+
+        entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
+                                       headers=headers)
+        entity_details = entity_response.json()
+        for entry in entity_details['entries']:
+            values = values + entry['value'] + ' | '
+        reply = {
+
+            "fulfillment_text": values,
+        }
+        return jsonify(reply)
+
 
 
 
