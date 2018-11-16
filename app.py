@@ -253,7 +253,7 @@ def get_detail():
                 if entity['name'] == 'Year':
                     entity_id = entity['id']
                     break
-        elif 'ratings' in parameters['Filters']:
+        elif 'rating' in parameters['Filters']:
             for entity in entities:
                 if entity['name'] == 'Ratings':
                     entity_id = entity['id']
