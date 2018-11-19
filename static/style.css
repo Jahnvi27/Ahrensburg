@@ -90,8 +90,8 @@ body {
   border-color: #fff;
   font-size: 9pt;
   border-bottom-right-radius: 8px;
-  align-content: center;
-  text-align: center;
+  /* align-content: center;
+  text-align: center; */
   font-family: 'Courier New';
   cursor: pointer;
 }

@@ -123,10 +123,12 @@ function displayMovieDetails(show_id){
 
       var description = document.getElementsByClassName(show_id)[0].value
       var title = document.getElementsByClassName(show_id)[1].innerHTML
+      var rating = document.getElementsByClassName(show_id)[2].innerHTML
       trailerDiv = '<div id="trailerDiv">' +
       '<iframe width="100%" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
       '<a class="preview-description center" href="#" onclick="showTrailer()"><b>Watch trailer</b></a>' +
       '<p class="preview-description"><b>' + title + '</b></p>' +
+      '<p class="preview-description"><I>' + rating + '</I></p>' +
       '<p class="preview-description"><I>' + description + '</I></p>' +
       '</div>';
       $("ul").append(trailerDiv).scrollTop($("ul").prop('scrollHeight'));
@@ -156,7 +158,10 @@ function displayMovies(movieDetails) {
         '<img class="preview-img" src=\'' + movieAttr[3] + '\'/>' +
         '</div>' +
         '<input class="' + movieAttr[1] + '" type="text" value=\'' + movieAttr[2] + '\' hidden>' +
-        '<p class="preview-title ' + movieAttr[1] + '">' + movieAttr[0] + '</p>' +
+        '<div class="preview-title">' +
+        '<p class="' + movieAttr[1] + '">' + movieAttr[0] + '</p>' +
+        '<p class="' + movieAttr[1] + '"><I>Rating: ' + movieAttr[4] + '/10</I></p>' +
+        '</div>'
         '</td>';
         if(movieDetailList[parseInt(movie) + 1] === null){
           movieListDiv = movieListDiv + '</tr>';
