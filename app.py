@@ -117,7 +117,14 @@ def get_detail():
                 for show in show_list:
                     name = show['name']
                     rating = show['vote_average']
-                    display = name + ' ---- ' + str(rating)
+                    poster_path = show['poster_path']
+                    tv_id = show['id']
+                    overview = show['overview']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                     names = names + display + '| '
                 reply = {
 
@@ -144,7 +151,16 @@ def get_detail():
             if len(show_list) > 0:
                 for show in show_list:
                     name = show['name']
-                    names = names + name + '| '
+                    tv_id = show['id']
+                    overview = show['overview']
+                    rating = show['vote_average']
+                    poster_path = show['poster_path']
+                    if poster_path is not None:
+                        final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
+                    else:
+                        final_path = ""
+                    display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
+                    names = names + display + '| '
                 reply = {
 
                     "fulfillment_text": names,
@@ -166,15 +182,15 @@ def get_detail():
             show_list = details['results']
             for show in show_list:
                 name = show['name']
+                tv_id = show['id']
+                rating = show['vote_average']
                 overview = show['overview']
-                display = name + ' ---- ' + overview
                 poster_path = show['poster_path']
                 if poster_path is not None:
                     final_path = "http://image.tmdb.org/t/p/w185/" + poster_path
                 else:
                     final_path = ""
-                tv_id = show['id']
-                display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path
+                display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
                 names = names + display + '| '
             reply = {
 
@@ -184,13 +200,13 @@ def get_detail():
             return jsonify(reply)
 
     # If the intent is for Movie
-    elif 'Movies' in scenario:
+    elif 'Movie' in scenario:
         genre_detail = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key={0}'.format(api_key))
         genre_detail = json.loads(genre_detail.content)
-        genre_id = 0
+        genre_id = ''
         # Fetch genre id
         for item in genre_detail['genres']:
-            if item['name'] == movie['genre']:
+            if item['name'] == movie['Genre'] and movie['Genre'] is not None:
                 genre_id = item['id']
                 break
 
@@ -238,7 +254,18 @@ def get_detail():
         if len(detail['results']) > 0:
             for item in detail['results']:
                 title = item['title']
-                titles = titles + title + '| '
+                movie_id = item['id']
+                movie_rating = item['vote_average']
+                movie_overview = item['overview']
+                movie_poster = item['poster_path']
+                if movie_poster is not None:
+                    movie_poster_url = "http://image.tmdb.org/t/p/w185/" + movie_poster
+                else:
+                    movie_poster_url = ""
+
+                final_output = title + '##' + str(movie_id) + '##' + movie_overview + '##' + movie_poster_url + '##' + str(movie_rating)
+                titles = titles + final_output + '| '
+
                 reply = {
 
                     "fulfillment_text": titles,
@@ -275,7 +302,7 @@ def get_detail():
                 if entity['name'] == 'Year':
                     entity_id = entity['id']
                     break
-        elif 'ratings' in parameters['Filters']:
+        elif 'rating' in parameters['Filters']:
             for entity in entities:
                 if entity['name'] == 'Ratings':
                     entity_id = entity['id']
