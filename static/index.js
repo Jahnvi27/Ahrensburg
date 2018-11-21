@@ -32,7 +32,7 @@ $(document).ready(function() {
     var botFrame = document.getElementsByClassName('frame').item(0);
     $('html, body').animate({
       scrollTop: botFrame.offsetTop
-    }, 500);
+    }, 1000);
   });
 
 });
@@ -54,7 +54,7 @@ function submit_message(text) {
     setTimeout(function () {
       console.log(filterValues);
       suggestion(filterValues);
-    }, 500);
+    }, 1000);
   }
   // else {
     inputConversation("bot", "<div id=\"loading\"></div>");
@@ -69,16 +69,21 @@ function submit_message(text) {
 
       if (data.message.includes("|")) {
         displayMovies(data.message);
-        inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
+        //inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
         filters = getFilters('Filters');
         setTimeout(function() {
           filters = filters.replace("Language", "");
           filters = filters.replace("Genre", "");
-          if (intentId == 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId == '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
+          if (intentId === 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId === '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
+            inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...");
             suggestion(filters);
-          } else if (intentId == 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
+          } else if (intentId === 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || intentId === '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
+            inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...");
             filters = filters.replace("Cast", "");
             suggestion(filters);
+          }
+          else if ( intentId === "91a3d9d4-eab9-4929-86da-6ab5bf9036bd"|| intentId === "a73b7784-eb58-45ff-80de-d78d252af250" || intentId === "7f75f273-7ec4-4f4f-8319-e7d0f3dae7d8" || intentId === "8893f055-4933-486a-8c8f-2c107aa100de"){
+            suggestion("Get Movie suggestions| Get TV-show suggestions");
           }
         }, 1000);
         return;
@@ -87,19 +92,21 @@ function submit_message(text) {
       document.getElementById("loading").innerHTML = data.message;
       document.getElementById("loading").id = "";
 
-      if (intentId == "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
+       console.log(intentId);
+      if (intentId === "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
+        console.log("print this");
         suggestion("Get Movie suggestions| Get TV-show suggestions");
-      } else if (intentId == "5bb8d797-a892-4dc1-b461-a8576a0eb91b") {
+      } else if (intentId === "5bb8d797-a892-4dc1-b461-a8576a0eb91b") {
         filters = getFilters('Filters');
         setTimeout(function() {
           suggestion(filters);
-        }, 500);
-      } else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
+        }, 1000);
+      } else if (intentId === "eaf81156-2629-4cd2-8506-d45b39eae48b") {
         filters = getFilters('Filters');
         setTimeout(function() {
           filters = filters.replace("Cast", "");
           suggestion(filters);
-        }, 500);
+        }, 1000);
       }
       $("ul").scrollTop($("ul").prop('scrollHeight'));
     }
