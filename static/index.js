@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 });
 
-var filtersList = ['Genre', 'Language', 'Cast'];
+var filtersList = ['Genre', 'Language', 'Cast', 'Year', 'Ratings'];
 var filterValues = '';
 
 //Icon Click submits message
@@ -49,12 +49,14 @@ function submitForm() {
 // and receive bot's response and insert in the UI
 function submit_message(text) {
   if (filtersList.includes(text)) {
+    filterValues = '';
     getFilters(text);
     setTimeout(function () {
       console.log(filterValues);
       suggestion(filterValues);
     }, 500);
-  } else {
+  }
+  // else {
     inputConversation("bot", "<div id=\"loading\"></div>");
     $.post("/send_message", {
       message: text
@@ -101,7 +103,7 @@ function submit_message(text) {
       }
       $("ul").scrollTop($("ul").prop('scrollHeight'));
     }
-  }
+  // }
 }
 
 function formSubmit() {
@@ -125,9 +127,11 @@ function getFilters(entityName) {
 }
 
 //--Method to call fetch_video_url method in server
-function displayMovieDetails(show_id) {
+function displayMovieDetails(show_id,context) {
+  console.log(context)
   $.get("/fetch_video_url", {
-    show_id: show_id
+    show_id: show_id,
+      context: context
   }, handle_response);
 
   function handle_response(data) {
@@ -160,7 +164,7 @@ function showTrailer() {
 function displayMovies(movieDetails) {
   movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px;"> <tr">';
   movieDetailList = movieDetails.split("|");
-
+  context = movieDetailList.pop()
   for (var movie in movieDetailList) {
     if (movieDetailList[movie].trim() != "") {
       movieAttr = movieDetailList[movie].split("##");
@@ -168,7 +172,7 @@ function displayMovies(movieDetails) {
         movieAttr[3] = "/static/image/default-poster.png";
       }
       movieListDiv = movieListDiv +
-        '<td class="preview-td" id="' + movieAttr[1] + '" onclick="displayMovieDetails(this.id)">' +
+        '<td class="preview-td" id="' + movieAttr[1] + '" onclick="displayMovieDetails(this.id,context)">' +
         '<div class="preview-box">' +
         '<img class="preview-img" src=\'' + movieAttr[3] + '\'/>' +
         '</div>' +

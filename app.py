@@ -59,12 +59,15 @@ def fetch_entities():
     entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
                                    headers=headers)
     entity_details = entity_response.json()
+    count = 0
     for entry in entity_details['entries']:
-        values = values + entry['value'] + ' | '
+        if count <= 20 :
+            values = values + entry['value'] + ' | '
+            count += 1
     reply = {
 
-        "fulfillment_text": values,
-    }
+          "fulfillment_text": values,
+       }
     print(reply)
     return jsonify(reply)
 
@@ -93,7 +96,8 @@ def fetch_filter_details():
 def get_video_details():
     api_key = os.getenv('TMDB_API_KEY')
     show_id = request.args.get('show_id')
-    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id))
+    context = request.args.get('context')
+    video_info = requests.get("https://api.themoviedb.org/3/{2}/{1}/videos?api_key={0}".format(api_key, show_id, context))
     video_details = video_info.json()
     if len(video_details['results']) > 0:
         yt_key = video_details['results'][0]['key']
@@ -145,10 +149,10 @@ def get_detail():
                     else:
                         final_path = ""
                     display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                    names = names + display + '| '
+                    names = names + display + '|'
                 reply = {
 
-                    "fulfillment_text": names,
+                    "fulfillment_text": names + 'tv',
                    }
                 return jsonify(reply)
             else:
@@ -180,10 +184,10 @@ def get_detail():
                     else:
                         final_path = ""
                     display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                    names = names + display + '| '
+                    names = names + display + '|'
                 reply = {
 
-                    "fulfillment_text": names,
+                    "fulfillment_text": names + 'tv',
                    }
                 return jsonify(reply)
             else:
@@ -211,10 +215,10 @@ def get_detail():
                 else:
                     final_path = ""
                 display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                names = names + display + '| '
+                names = names + display + '|'
             reply = {
 
-                "fulfillment_text": names,
+                "fulfillment_text": names + 'tv',
               }
 
             return jsonify(reply)
@@ -284,11 +288,11 @@ def get_detail():
                     movie_poster_url = ""
 
                 final_output = title + '##' + str(movie_id) + '##' + movie_overview + '##' + movie_poster_url + '##' + str(movie_rating)
-                titles = titles + final_output + '| '
+                titles = titles + final_output + '|'
 
                 reply = {
 
-                    "fulfillment_text": titles,
+                    "fulfillment_text": titles + 'movie',
 
                     }
         else:
