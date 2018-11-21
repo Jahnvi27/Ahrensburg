@@ -229,19 +229,21 @@ def get_detail():
         genre_detail = json.loads(genre_detail.content)
         genre_id = ''
         # Fetch genre id
-        for item in genre_detail['genres']:
-            if item['name'] == movie['Genre'] and movie['Genre'] is not None:
-                genre_id = item['id']
-                break
+        if 'Genre' in movie:
+            for item in genre_detail['genres']:
+                if item['name'] == movie['Genre'] and movie['Genre'] is not None:
+                    genre_id = item['id']
+                    break
 
         language_detail = requests.get('https://api.themoviedb.org/3/configuration/languages?api_key={0}'.format(api_key))
         language_detail = json.loads(language_detail.content)
         language_id = ""
         # Fetch language id
-        for item in language_detail:
-            if item['english_name'] == movie['language']:
-                language_id = item['iso_639_1']
-                break
+        if 'language' in movie:
+            for item in language_detail:
+                if item['english_name'] == movie['language']:
+                    language_id = item['iso_639_1']
+                    break
         cast_id = 0
         if 'Cast' in movie and len(movie['Cast']) != 0:
             cast_detail = requests.get('http://api.tmdb.org/3/search/person?api_key={0}&query={1}'.format(api_key, movie['Cast']))
