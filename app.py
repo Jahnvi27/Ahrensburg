@@ -318,3 +318,23 @@ def get_detail():
             "fulfillment_text": values,
         }
         return jsonify(reply)
+
+#To get genre id of a specific genre
+def get_genre_id(genre, genre_type):
+    api_key = os.getenv('TMDB_API_KEY')
+
+    #To check if the genre is for movie or tv-show
+    if genre_type == "Movie":
+        genre_detail = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key={0}'.format(api_key))
+    elif genre_type == "TV-Shows":
+        genre_detail = requests.get('https://api.themoviedb.org/3/genre/tv/list?api_key={0}'.format(api_key))
+
+    genre_detail = json.loads(genre_detail.content)
+    genre_id = ''
+
+    # Fetch genre id
+    for item in genre_detail['genres']:
+        if item['name'] == genre:
+            genre_id = item['id']
+        	break
+    return genre_id
