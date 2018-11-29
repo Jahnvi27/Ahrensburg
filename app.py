@@ -41,12 +41,32 @@ def send_message():
     return jsonify(response_text)
 
 
+@app.route('/fetch_entity_details', methods=['GET'])
 def fetch_entities():
+    entity_name = request.args.get('entity_name')
     url = "https://api.dialogflow.com/v1/entities"
     headers = {'Content-Type': 'application/json',
                'authorization': os.getenv('dev_token')}
     response = requests.get(url, headers=headers)
-    return response.json()
+    entities = response.json()
+    entity_id = ''
+    values = ''
+    for entity in entities:
+        if entity['name'].lower() == entity_name.lower():
+            entity_id = entity['id']
+            break
+
+    entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
+                                   headers=headers)
+    entity_details = entity_response.json()
+    for entry in entity_details['entries']:
+        values = values + entry['value'] + ' | '
+    reply = {
+
+        "fulfillment_text": values,
+    }
+    print(reply)
+    return jsonify(reply)
 
 
 @app.route('/filter_details', methods=['GET'])
