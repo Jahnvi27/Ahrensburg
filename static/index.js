@@ -143,7 +143,7 @@ function showTrailer(){
 }
 //-- Method to display Movies
 function displayMovies(movieDetails) {
-  movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px;"> <tr">';
+  movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px; min-height: fit-content;"> <tr">';
   movieDetailList = movieDetails.split("|");
 
   for (var movie in movieDetailList) {
