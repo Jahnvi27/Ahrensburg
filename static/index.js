@@ -37,9 +37,6 @@ $(document).ready(function() {
 
 });
 
-var filtersList = ['Genre', 'Language', 'Cast'];
-var filterValues = '';
-
 //Icon Click submits message
 function submitForm() {
   $('#queryForm').submit();
@@ -48,59 +45,51 @@ function submitForm() {
 // Method to send user query in a form based object to server
 // and receive bot's response and insert in the UI
 function submit_message(text) {
-  if (filtersList.includes(text)) {
-    getFilters(text);
-    setTimeout(function () {
-      console.log(filterValues);
-      suggestion(filterValues);
-    }, 500);
-  } else {
-    inputConversation("bot", "<div id=\"loading\"></div>");
-    $.post("/send_message", {
-      message: text
-    }, handle_response);
+  inputConversation("bot", "<div id=\"loading\"></div>");
+  $.post("/send_message", {
+    message: text
+  }, handle_response);
 
-    //Handles bot response
-    function handle_response(data) {
+  //Handles bot response
+  function handle_response(data) {
 
-      intentId = data.intentId.split("/")[4]
+    intentId = data.intentId.split("/")[4]
 
-      if (data.message.includes("|")) {
-        displayMovies(data.message);
-        inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
-        filters = getFilters('Filters');
-        setTimeout(function() {
-          filters = filters.replace("Language", "");
-          filters = filters.replace("Genre", "");
-          if (intentId == 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId == '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
-            suggestion(filters);
-          } else if (intentId == 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
-            filters = filters.replace("Cast", "");
-            suggestion(filters);
-          }
-        }, 1000);
-        return;
-      }
-
-      document.getElementById("loading").innerHTML = data.message;
-      document.getElementById("loading").id = "";
-
-      if (intentId == "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
-        suggestion("Get Movie suggestions| Get TV-show suggestions");
-      } else if (intentId == "5bb8d797-a892-4dc1-b461-a8576a0eb91b") {
-        filters = getFilters('Filters');
-        setTimeout(function() {
+    if (data.message.includes("|")) {
+      displayMovies(data.message);
+      inputConversation("bot", "Wanna dig deeper? Awesome! Go ahead and hit one of these filter by options...")
+      filters = getFilters();
+      setTimeout(function() {
+        filters = filters.replace("language", "");
+        filters = filters.replace("genre", "");
+        if (intentId == 'a9a3281b-5018-421b-b9d3-d3ef3adaafda' || intentId == '213a53db-ff41-4cd2-a516-b94c09a4a7a3') {
           suggestion(filters);
-        }, 500);
-      } else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
-        filters = getFilters('Filters');
-        setTimeout(function() {
-          filters = filters.replace("Cast", "");
+        } else if (intentId == 'ea844afe-94b6-4f74-aeb0-9d8e1af10813' || '4fce1a0a-0062-4ed3-a4a3-4cbd9f2114cc') {
+          filters = filters.replace("cast", "");
           suggestion(filters);
-        }, 500);
-      }
-      $("ul").scrollTop($("ul").prop('scrollHeight'));
+        }
+      }, 1000);
+      return;
     }
+
+    document.getElementById("loading").innerHTML = data.message;
+    document.getElementById("loading").id = "";
+
+    if (intentId == "467b18a3-3c3d-4833-885a-5d27f9a735b1") {
+      suggestion("Get Movie suggestions| Get TV-show suggestions");
+    } else if (intentId == "5bb8d797-a892-4dc1-b461-a8576a0eb91b") {
+      filters = getFilters();
+      setTimeout(function() {
+        suggestion(filters);
+      }, 500);
+    } else if (intentId == "eaf81156-2629-4cd2-8506-d45b39eae48b") {
+      filters = getFilters();
+      setTimeout(function() {
+        filters = filters.replace("cast", "");
+        suggestion(filters);
+      }, 500);
+    }
+    $("ul").scrollTop($("ul").prop('scrollHeight'));
   }
 }
 
@@ -109,30 +98,26 @@ function formSubmit() {
 }
 
 //-- Call dialogflow to get filter values
-function getFilters(entityName) {
-  $.get("/fetch_entity_details", {
-    entity_name: entityName
-  }, handle_response);
+function getFilters() {
+  $.get("/filter_details", {}, handle_response);
 
   filters = "";
 
   function handle_response(data) {
-    filters = data.fulfillment_text;
-    console.log(filters);
-    filterValues = filters;
+    filters = data.message;
     return filters;
   }
 }
 
 //--Method to call fetch_video_url method in server
-function displayMovieDetails(show_id) {
+function displayMovieDetails(show_id){
   $.get("/fetch_video_url", {
     show_id: show_id
   }, handle_response);
 
-  function handle_response(data) {
-    setTimeout(function() {
-      if (document.getElementById("trailerDiv") != null) {
+  function handle_response(data){
+    setTimeout(function () {
+      if(document.getElementById("trailerDiv") != null){
         document.getElementById("trailerDiv").remove();
       }
 
@@ -140,19 +125,19 @@ function displayMovieDetails(show_id) {
       var title = document.getElementsByClassName(show_id)[1].innerHTML
       var rating = document.getElementsByClassName(show_id)[2].innerHTML
       trailerDiv = '<div id="trailerDiv">' +
-        '<iframe width="100%" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
-        '<a class="preview-description center" href="#" onclick="showTrailer()"><b>Watch trailer</b></a>' +
-        '<p class="preview-description"><b>' + title + '</b></p>' +
-        '<p class="preview-description"><I>' + rating + '</I></p>' +
-        '<p class="preview-description"><I>' + description + '</I></p>' +
-        '</div>';
+      '<iframe width="100%" height="280" src=' + data.message + ' frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
+      '<a class="preview-description center" href="#" onclick="showTrailer()"><b>Watch trailer</b></a>' +
+      '<p class="preview-description"><b>' + title + '</b></p>' +
+      '<p class="preview-description"><I>' + rating + '</I></p>' +
+      '<p class="preview-description"><I>' + description + '</I></p>' +
+      '</div>';
       $("ul").append(trailerDiv).scrollTop($("ul").prop('scrollHeight'));
       $("iframe").hide();
     }, 1000);
   }
 }
 
-function showTrailer() {
+function showTrailer(){
   $("iframe").show();
   $("ul").scrollTop($("ul").prop('scrollHeight'));
 }
@@ -164,7 +149,7 @@ function displayMovies(movieDetails) {
   for (var movie in movieDetailList) {
     if (movieDetailList[movie].trim() != "") {
       movieAttr = movieDetailList[movie].split("##");
-      if (movieAttr[3].trim() == "") {
+      if(movieAttr[3].trim() == ""){
         movieAttr[3] = "/static/image/default-poster.png";
       }
       movieListDiv = movieListDiv +
@@ -177,13 +162,13 @@ function displayMovies(movieDetails) {
         '<p class="' + movieAttr[1] + '">' + movieAttr[0] + '</p>' +
         '<p class="' + movieAttr[1] + '"><I>Rating: ' + movieAttr[4] + '/10</I></p>' +
         '</div>'
-      '</td>';
-      if (movieDetailList[parseInt(movie) + 1] === null) {
-        movieListDiv = movieListDiv + '</tr>';
-      }
-      if (movie % 2 != 0) {
-        movieListDiv = movieListDiv + '</tr><tr>';
-      }
+        '</td>';
+        if(movieDetailList[parseInt(movie) + 1] === null){
+          movieListDiv = movieListDiv + '</tr>';
+        }
+        if (movie%2 != 0) {
+          movieListDiv = movieListDiv + '</tr><tr>';
+        }
     }
   }
   movieListDiv = movieListDiv + '</table>';
@@ -253,7 +238,6 @@ function inputConversation(userbot, message) {
 }
 
 function suggestion(message) {
-  console.log(message);
   suggestionTexts = message.split("|");
   var buttonFields = '<div class="center suggestion">';
   for (var index in suggestionTexts) {
@@ -261,7 +245,7 @@ function suggestion(message) {
     if (text != "") {
       buttonFields = buttonFields +
         '<button class="btn btn-primary btn-lg suggestion-btn"' +
-        'onclick="submit_message(this.innerHTML)">' + text + '</button>';
+        'onclick="submit_message(this.innerHTML.toLowerCase())">' + text + '</button>';
     }
   }
   buttonFields = buttonFields + '</div>';
