@@ -336,7 +336,7 @@ def get_genre_id(genre, genre_type):
     for item in genre_detail['genres']:
         if item['name'] == genre:
             genre_id = item['id']
-        	break
+            break
     return genre_id
 
 #To get language id of a specific language

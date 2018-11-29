@@ -239,7 +239,7 @@ function inputConversation(userbot, message) {
 
 function suggestion(message) {
   suggestionTexts = message.split("|");
-  var buttonFields = '<div class="center suggestion">';
+  var buttonFields = '<div class="center suggestion" style="min-height: fit-content">';
   for (var index in suggestionTexts) {
     text = suggestionTexts[index].trim();
     if (text != "") {
