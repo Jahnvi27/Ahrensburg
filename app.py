@@ -343,3 +343,37 @@ def get_detail():
             "fulfillment_text": values,
         }
         return jsonify(reply)
+
+#To get genre id of a specific genre
+def get_genre_id(genre, genre_type):
+    api_key = os.getenv('TMDB_API_KEY')
+
+    #To check if the genre is for movie or tv-show
+    if genre_type == "Movie":
+        genre_detail = requests.get('https://api.themoviedb.org/3/genre/movie/list?api_key={0}'.format(api_key))
+    elif genre_type == "TV-Shows":
+        genre_detail = requests.get('https://api.themoviedb.org/3/genre/tv/list?api_key={0}'.format(api_key))
+
+    genre_detail = json.loads(genre_detail.content)
+    genre_id = ''
+
+    # Fetch genre id
+    for item in genre_detail['genres']:
+        if item['name'] == genre:
+            genre_id = item['id']
+            break
+    return genre_id
+
+#To get language id of a specific language
+def get_language_id(language):
+    api_key = os.getenv('TMDB_API_KEY')
+    language_detail = requests.get('https://api.themoviedb.org/3/configuration/languages?api_key={0}'.format(api_key))
+    language_detail = json.loads(language_detail.content)
+    language_id = ""
+
+    # Fetch language id
+    for item in language_detail:
+        if item['english_name'] == language:
+            language_id = item['iso_639_1']
+        break
+    return language_id

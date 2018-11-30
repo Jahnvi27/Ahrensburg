@@ -169,7 +169,7 @@ function showTrailer() {
 }
 //-- Method to display Movies
 function displayMovies(movieDetails) {
-  movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px;"> <tr">';
+  movieListDiv = '<table class="center" style="padding-top: 10px; padding-bottom: 10px; min-height: fit-content;"> <tr">';
   movieDetailList = movieDetails.split("|");
   context = movieDetailList.pop()
   for (var movie in movieDetailList) {
@@ -266,7 +266,7 @@ function inputConversation(userbot, message) {
 function suggestion(message) {
   console.log(message);
   suggestionTexts = message.split("|");
-  var buttonFields = '<div class="center suggestion">';
+  var buttonFields = '<div class="center suggestion" style="min-height: fit-content">';
   for (var index in suggestionTexts) {
     text = suggestionTexts[index].trim();
     if (text != "") {
