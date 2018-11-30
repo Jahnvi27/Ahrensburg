@@ -68,7 +68,6 @@ def fetch_entities():
 
           "fulfillment_text": values,
        }
-    print(reply)
     return jsonify(reply)
 
 
