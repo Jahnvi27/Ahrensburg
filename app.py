@@ -41,12 +41,34 @@ def send_message():
     return jsonify(response_text)
 
 
+@app.route('/fetch_entity_details', methods=['GET'])
 def fetch_entities():
+    entity_name = request.args.get('entity_name')
     url = "https://api.dialogflow.com/v1/entities"
     headers = {'Content-Type': 'application/json',
                'authorization': os.getenv('dev_token')}
     response = requests.get(url, headers=headers)
-    return response.json()
+    entities = response.json()
+    entity_id = ''
+    values = ''
+    for entity in entities:
+        if entity['name'].lower() == entity_name.lower():
+            entity_id = entity['id']
+            break
+
+    entity_response = requests.get("https://api.dialogflow.com/v1/entities/{0}".format(entity_id),
+                                   headers=headers)
+    entity_details = entity_response.json()
+    count = 0
+    for entry in entity_details['entries']:
+        if count <= 20 :
+            values = values + entry['value'] + ' | '
+            count += 1
+    reply = {
+
+          "fulfillment_text": values,
+       }
+    return jsonify(reply)
 
 
 @app.route('/filter_details', methods=['GET'])
@@ -73,7 +95,8 @@ def fetch_filter_details():
 def get_video_details():
     api_key = os.getenv('TMDB_API_KEY')
     show_id = request.args.get('show_id')
-    video_info = requests.get("https://api.themoviedb.org/3/tv/{1}/videos?api_key={0}".format(api_key, show_id))
+    context = request.args.get('context')
+    video_info = requests.get("https://api.themoviedb.org/3/{2}/{1}/videos?api_key={0}".format(api_key, show_id, context))
     video_details = video_info.json()
     if len(video_details['results']) > 0:
         yt_key = video_details['results'][0]['key']
@@ -125,10 +148,10 @@ def get_detail():
                     else:
                         final_path = ""
                     display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                    names = names + display + '| '
+                    names = names + display + '|'
                 reply = {
 
-                    "fulfillment_text": names,
+                    "fulfillment_text": names + 'tv',
                    }
                 return jsonify(reply)
             else:
@@ -160,10 +183,10 @@ def get_detail():
                     else:
                         final_path = ""
                     display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                    names = names + display + '| '
+                    names = names + display + '|'
                 reply = {
 
-                    "fulfillment_text": names,
+                    "fulfillment_text": names + 'tv',
                    }
                 return jsonify(reply)
             else:
@@ -191,10 +214,10 @@ def get_detail():
                 else:
                     final_path = ""
                 display = name + '##' + str(tv_id) + "##" + overview + "##" + final_path + "##" + str(rating)
-                names = names + display + '| '
+                names = names + display + '|'
             reply = {
 
-                "fulfillment_text": names,
+                "fulfillment_text": names + 'tv',
               }
 
             return jsonify(reply)
@@ -205,19 +228,21 @@ def get_detail():
         genre_detail = json.loads(genre_detail.content)
         genre_id = ''
         # Fetch genre id
-        for item in genre_detail['genres']:
-            if item['name'] == movie['Genre'] and movie['Genre'] is not None:
-                genre_id = item['id']
-                break
+        if 'Genre' in movie:
+            for item in genre_detail['genres']:
+                if item['name'] == movie['Genre'] and movie['Genre'] is not None:
+                    genre_id = item['id']
+                    break
 
         language_detail = requests.get('https://api.themoviedb.org/3/configuration/languages?api_key={0}'.format(api_key))
         language_detail = json.loads(language_detail.content)
         language_id = ""
         # Fetch language id
-        for item in language_detail:
-            if item['english_name'] == movie['language']:
-                language_id = item['iso_639_1']
-                break
+        if 'language' in movie:
+            for item in language_detail:
+                if item['english_name'] == movie['language']:
+                    language_id = item['iso_639_1']
+                    break
         cast_id = 0
         if 'Cast' in movie and len(movie['Cast']) != 0:
             cast_detail = requests.get('http://api.tmdb.org/3/search/person?api_key={0}&query={1}'.format(api_key, movie['Cast']))
@@ -264,11 +289,11 @@ def get_detail():
                     movie_poster_url = ""
 
                 final_output = title + '##' + str(movie_id) + '##' + movie_overview + '##' + movie_poster_url + '##' + str(movie_rating)
-                titles = titles + final_output + '| '
+                titles = titles + final_output + '|'
 
                 reply = {
 
-                    "fulfillment_text": titles,
+                    "fulfillment_text": titles + 'movie',
 
                     }
         else:
