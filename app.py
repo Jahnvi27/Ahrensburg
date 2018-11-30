@@ -344,6 +344,41 @@ def get_detail():
         }
         return jsonify(reply)
 
+    elif 'DirectSuggest' in scenario:
+        direct_detail = requests.get('http://api.tmdb.org/3/search/movie?api_key={0}&query={1}'.format(api_key, movie['Suggest']))
+        direct_detail = json.loads(direct_detail.content)
+        titles = ''
+
+        if len(direct_detail['results']) > 0:
+            for item in direct_detail['results']:
+                title = item['title']
+                movie_id = item['id']
+                movie_rating = item['vote_average']
+                movie_overview = item['overview']
+                movie_poster = item['poster_path']
+                if movie_poster is not None:
+                    movie_poster_url = "http://image.tmdb.org/t/p/w185/" + movie_poster
+                else:
+                    movie_poster_url = ""
+
+                final_output = title + '##' + str(
+                    movie_id) + '##' + movie_overview + '##' + movie_poster_url + '##' + str(movie_rating)
+                titles = titles + final_output + '|'
+
+                reply = {
+
+                    "fulfillment_text": titles + 'movie',
+
+                }
+        else:
+            reply = {
+
+                "fulfillment_text": "Sorry!!! there are no movies according to your choice. Can you make some other selection?"
+
+            }
+
+        return jsonify(reply)
+
 #To get genre id of a specific genre
 def get_genre_id(genre, genre_type):
     api_key = os.getenv('TMDB_API_KEY')
